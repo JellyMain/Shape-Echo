@@ -1,4 +1,6 @@
 using System;
+using ShapeComponents;
+using StaticData.Data;
 using UnityEngine;
 
 
@@ -6,12 +8,13 @@ namespace JoinPointComponents
 {
     public class ShapeAttractor : MonoBehaviour
     {
+        [SerializeField] private JoinPoint joinPoint;
         [SerializeField] private CircleCollider2D attractionZone;
         [SerializeField] private float minMoveSpeed = 3;
         [SerializeField] private float maxMoveSpeed = 10;
         private Transform attractedShape;
-        public event Action ShapeAttracting;
-        public event Action ShapeNotAttracting;
+        public event Action<ShapeID, int> ShapeAttracting;
+        public event Action<ShapeID, int> ShapeNotAttracting;
 
         
         
@@ -29,8 +32,10 @@ namespace JoinPointComponents
         {
             if (other.CompareTag("Shape") && attractedShape == null)
             {
+                Shape shape = other.gameObject.GetComponent<Shape>();
+                
                 attractedShape = other.transform;
-                ShapeAttracting?.Invoke();
+                ShapeAttracting?.Invoke(shape.ShapeID, joinPoint.SpawnIndex);
             }
         }
 
@@ -39,7 +44,10 @@ namespace JoinPointComponents
         {
             if (other.CompareTag("Shape") && other.transform == attractedShape)
             {
-                ShapeNotAttracting?.Invoke();
+                Shape shape = other.gameObject.GetComponent<Shape>();
+                JoinPoint joinPoint = GetComponent<JoinPoint>();
+                
+                ShapeNotAttracting?.Invoke(shape.ShapeID, joinPoint.SpawnIndex);
                 attractedShape = null;
             }
         }

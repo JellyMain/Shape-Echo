@@ -1,4 +1,6 @@
 using System;
+using Infrastructure;
+using StaticData.Data;
 using UnityEngine;
 
 
@@ -9,6 +11,14 @@ namespace JoinPointComponents
     {
         [SerializeField] private ShapeAttractor shapeAttractor;
         [SerializeField] private JoinPointAnimator pointAnimator;
+        private LevelValidator levelValidator;
+        public int SpawnIndex { get; set; }
+
+
+        private void Awake()
+        {
+            levelValidator = ServiceLocator.Container.Single<LevelValidator>();
+        }
 
 
         private void Start()
@@ -19,6 +29,8 @@ namespace JoinPointComponents
 
         private void OnEnable()
         {
+            shapeAttractor.ShapeAttracting += levelValidator.AddShape;
+            shapeAttractor.ShapeNotAttracting += levelValidator.RemoveShape;
             shapeAttractor.ShapeAttracting += pointAnimator.OnShapeAttracting;
             shapeAttractor.ShapeNotAttracting += pointAnimator.OnShapeNotAttracting;
         }
@@ -26,6 +38,8 @@ namespace JoinPointComponents
 
         private void OnDisable()
         {
+            shapeAttractor.ShapeAttracting -= levelValidator.AddShape;
+            shapeAttractor.ShapeNotAttracting -= levelValidator.RemoveShape;
             shapeAttractor.ShapeAttracting -= pointAnimator.OnShapeAttracting;
             shapeAttractor.ShapeNotAttracting -= pointAnimator.OnShapeNotAttracting;
         }

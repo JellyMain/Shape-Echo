@@ -63,6 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7618871bc27446fb88885c2567102ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joinPoint: {fileID: 6832803509247109826}
   attractionZone: {fileID: 3304680542075572471}
   minMoveSpeed: 15
   maxMoveSpeed: 30

@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c5f4854b4bc42bf8157891ad2b42b70, type: 3}
-  m_Name: LevelsStaticData
+  m_Script: {fileID: 11500000, guid: 324c6fd3c103e0f418eb4b98c46bf63c, type: 3}
+  m_Name: HotReloadSettingsObject
   m_EditorClassIdentifier: 
-  levelConfigs:
-  - levelIndex: 1
-    joinPointShapes: 0100000003000000020000000200000003000000
-    spawnBoxWidth: 15
-    spawnPointsOffset: 0.5
+  IncludeInBuild: 1
+  AllowAndroidAppToMakeHttpRequests: 1
+  PromptsPrefab: {fileID: 4967086677379066170, guid: 0dc8d7047b14c44b7970c5d35665dbe1, type: 3}

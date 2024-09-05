@@ -85,6 +85,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shapeAnimator: {fileID: 381579249949007107}
+  shapeID: 3
 --- !u!114 &7853501938861278285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +114,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationEase: 30
   spriteRenderer: {fileID: 4059234128735059466}
-  shapeEventDetector: {fileID: 0}
   enterExitAnimationSpeed: 0.5
 --- !u!82 &3004493257407915430
 AudioSource:

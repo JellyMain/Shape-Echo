@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using DG.Tweening;
+using StaticData.Data;
 using UnityEngine;
 
 
@@ -24,12 +25,24 @@ namespace JoinPointComponents
         }
 
 
+        public void OnShapeAttracting(ShapeID _, int __)
+        {
+            transform.DOScale(0.5f, shapeStartAttractingDuration);
+        }
+
+
         public void OnShapeAttracting()
         {
             transform.DOScale(0.5f, shapeStartAttractingDuration);
         }
 
 
+        public void OnShapeNotAttracting(ShapeID _, int __)
+        {
+            transform.DOScale(1, shapeStopAttractingDuration);
+        }
+        
+        
         public void OnShapeNotAttracting()
         {
             transform.DOScale(1, shapeStopAttractingDuration);

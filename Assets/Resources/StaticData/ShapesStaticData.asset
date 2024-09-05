@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapeConfigs:
   - shapePrefab: {fileID: -4168367222823164245, guid: b9f5e9b0582f16c4db6693a8939de669, type: 3}
-    shapeID: 0
-  - shapePrefab: {fileID: -4168367222823164245, guid: a7ac4c0865318d94a948853eef8986e5, type: 3}
     shapeID: 1
-  - shapePrefab: {fileID: -4168367222823164245, guid: f35f8f47fa05ba94286d87d89689b014, type: 3}
+  - shapePrefab: {fileID: -4168367222823164245, guid: a7ac4c0865318d94a948853eef8986e5, type: 3}
     shapeID: 2
+  - shapePrefab: {fileID: -4168367222823164245, guid: f35f8f47fa05ba94286d87d89689b014, type: 3}
+    shapeID: 3

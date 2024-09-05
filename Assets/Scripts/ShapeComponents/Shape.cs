@@ -1,4 +1,7 @@
 using System;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using StaticData.Data;
 using UnityEngine;
 
 
@@ -7,6 +10,8 @@ namespace ShapeComponents
     public class Shape : MonoBehaviour
     {
         [SerializeField] private ShapeAnimator shapeAnimator;
+        [SerializeField] private ShapeID shapeID;
+        public ShapeID ShapeID => shapeID;
 
         public Action ShapeSelected;
         public Action ShapeDeselected;
@@ -32,9 +37,10 @@ namespace ShapeComponents
         }
 
 
-        public void Kill()
+        public async UniTask Kill()
         {
-            
+            await shapeAnimator.AnimateDestroy();
+            Destroy(gameObject);
         }
     }
 }

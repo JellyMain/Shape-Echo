@@ -14,16 +14,18 @@ namespace Factories
     public class LevelFactory
     {
         private readonly StaticDataService staticDataService;
-        private float spawnBoxWidth = 10;
-        private float pointOffset = 0.7f;
+        private readonly LevelValidator levelValidator;
+        private float spawnBoxWidth;
+        private float pointOffset;
         private JoinPoint joinPointPrefab;
         private readonly List<JoinPoint> spawnedPoints = new List<JoinPoint>();
         private readonly List<Shape> spawnedShapes = new List<Shape>();
 
 
-        public LevelFactory(StaticDataService staticDataService)
+        public LevelFactory(StaticDataService staticDataService, LevelValidator levelValidator)
         {
             this.staticDataService = staticDataService;
+            this.levelValidator = levelValidator;
         }
 
 
@@ -41,7 +43,10 @@ namespace Factories
 
             SpawnPoints(currentLevelConfig).Forget();
             await UniTask.Delay(1500);
-            SpawnShapes(currentLevelConfig).Forget();
+            await SpawnShapes(currentLevelConfig);
+
+            
+            DestroyShapes().Forget();
         }
 
 
@@ -49,54 +54,55 @@ namespace Factories
         {
             int joinPoints = currentLevelConfig.joinPointShapes.Count;
             float equalDistance = spawnBoxWidth / (joinPoints - 1);
-
-
-            for (int point = 0; point < joinPoints; point++)
+            
+            for (int i = 0; i < joinPoints; i++)
             {
-                Vector2 position = new Vector2(point * equalDistance - spawnBoxWidth / 2, 0);
-                InstantiateJoinPoint(position);
+                Vector2 position = new Vector2(i * equalDistance - spawnBoxWidth / 2, 0);
+                InstantiateJoinPoint(position, i);
 
-                await UniTask.Delay(250);
+                await UniTask.Delay(100);
             }
         }
 
 
-        private void InstantiateJoinPoint(Vector2 position)
+        private void InstantiateJoinPoint(Vector2 position, int spawnIndex)
         {
             JoinPoint joinPoint = Object.Instantiate(joinPointPrefab, position, Quaternion.identity);
+            joinPoint.SpawnIndex = spawnIndex;
             spawnedPoints.Add(joinPoint);
         }
 
 
-        private async UniTaskVoid SpawnShapes(LevelConfig currentLevelConfig)
+        private async UniTask SpawnShapes(LevelConfig currentLevelConfig)
         {
             for (int i = 0; i < currentLevelConfig.joinPointShapes.Count; i++)
             {
                 ShapeID shapeID = currentLevelConfig.joinPointShapes[i];
+                
                 Shape prefab = staticDataService.ForShapeID(shapeID).shapePrefab;
                 Shape spawnedShape =
                     Object.Instantiate(prefab, spawnedPoints[i].transform.position, Quaternion.identity);
-                spawnedShapes.Add(spawnedShape);
-
-                await UniTask.Delay(500);
-            }
-        }
-
-
-        private void DestroyShapes()
-        {
-            foreach (Shape shape in spawnedShapes)
-            {
                 
+                spawnedShape.GetComponent<Collider2D>().enabled = false;
+                
+                spawnedShapes.Add(spawnedShape);
+                
+                spawnedPoints[i].GetComponent<JoinPointAnimator>().OnShapeAttracting();
+
+                await UniTask.Delay(100);
             }
         }
 
 
-        private static bool IsEvenNumber(int joinPoints)
+        private async UniTaskVoid DestroyShapes()
         {
-            return joinPoints % 2 == 0;
+            for (int i = 0; i < spawnedShapes.Count; i++)
+            {
+                await spawnedShapes[i].Kill();
+                spawnedPoints[i].GetComponent<JoinPointAnimator>().OnShapeNotAttracting();
+            }
         }
-
+        
 
         public async void CleanLevel()
         {

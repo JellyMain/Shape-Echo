@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shapeAnimator: {fileID: 381579249949007107}
+  shapeID: 2
 --- !u!114 &7853501938861278285
 MonoBehaviour:
   m_ObjectHideFlags: 0

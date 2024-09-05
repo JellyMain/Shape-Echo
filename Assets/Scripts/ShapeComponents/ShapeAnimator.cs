@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -48,7 +49,6 @@ namespace ShapeComponents
 
             shapeEnteredSequence =
                 DOTween.Sequence().SetSpeedBased().SetAutoKill(false).OnComplete(() => canAnimate = true);
-            ;
 
             shapeEnteredSequence
                 .Append(material.DOFloat(1, PULSE_FACTOR, enterExitAnimationSpeed));
@@ -73,14 +73,13 @@ namespace ShapeComponents
                 .Append(material.DOFloat(0, PULSE_FACTOR, enterExitAnimationSpeed));
         }
 
-
-        public void KillShape()
+        
+        public async UniTask AnimateDestroy()
         {
-            if(!canAnimate) return;
-            
+            await transform.DOScale(0, 0.5f).AsyncWaitForCompletion().AsUniTask();
         }
-
     
+        
         private void OnShapeClickedAnimation()
         {
             if (canAnimate)
@@ -88,6 +87,8 @@ namespace ShapeComponents
                 transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), 0.5f);
             }
         }
+
+
     
     }
 }

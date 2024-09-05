@@ -21,32 +21,35 @@ namespace Infrastructure.Installers.Global
             InitServices();
         }
 
-
-        private void RegisterServices()
-        {
-            RegisterInputService();
-            RegisterStaticDataService();
-
-            LoadingScreen loadingScreen = CreateLoadingScreen();
-            SceneLoader sceneLoader = RegisterSceneLoader(loadingScreen);
-            UIFactory uiFactory = RegisterUIFactory();
-            LevelFactory levelFactory = RegisterLevelFactory();
-            gameStateMachine = RegisterGameStateMachine();
-
-            RegisterGameMachineStates(gameStateMachine, sceneLoader, uiFactory, levelFactory);
-        }
-
         
         private void Start()
         {
             gameStateMachine.Enter<BootstrapState>();
         }
+        
+        
+        private void RegisterServices()
+        {
+            RegisterInputService();
+
+            StaticDataService staticDataService = RegisterStaticDataService();
+            LevelValidator levelValidator = RegisterLevelValidator(staticDataService);
+            LoadingScreen loadingScreen = CreateLoadingScreen();
+            SceneLoader sceneLoader = RegisterSceneLoader(loadingScreen);
+            UIFactory uiFactory = RegisterUIFactory();
+            LevelFactory levelFactory = RegisterLevelFactory(staticDataService, levelValidator);
+
+            gameStateMachine = RegisterGameStateMachine();
+
+            RegisterGameMachineStates(gameStateMachine, sceneLoader, uiFactory, levelFactory);
+        }
 
 
-        private void InitServices()
+        private static void InitServices()
         {
             ServiceLocator.Container.Single<GameStateMachine>().Init();
             ServiceLocator.Container.Single<StaticDataService>().Init();
+            ServiceLocator.Container.Single<LevelValidator>().Init();
             ServiceLocator.Container.Single<LevelFactory>().InitPrefabs();
         }
 
@@ -57,25 +60,32 @@ namespace Infrastructure.Installers.Global
             ServiceLocator.Container.RegisterGlobalSingle(new BootstrapState(gameStateMachine));
             ServiceLocator.Container.RegisterGlobalSingle(new LoadProgressState(gameStateMachine));
             ServiceLocator.Container.RegisterGlobalSingle(new LoadMetaState(gameStateMachine, sceneLoader));
-            ServiceLocator.Container.RegisterGlobalSingle(new LoadLevelState(gameStateMachine, sceneLoader, uiFactory, levelFactory));
+            ServiceLocator.Container.RegisterGlobalSingle(new LoadLevelState(gameStateMachine, sceneLoader, uiFactory,
+                levelFactory));
             ServiceLocator.Container.RegisterGlobalSingle(new GameLoopState(gameStateMachine));
         }
 
-
-        private static LevelFactory RegisterLevelFactory()
+        
+        private static LevelValidator RegisterLevelValidator(StaticDataService staticDataService)
         {
-            StaticDataService staticDataService = ServiceLocator.Container.Single<StaticDataService>();
-            return ServiceLocator.Container.RegisterGlobalSingle(new LevelFactory(staticDataService));
+            return ServiceLocator.Container.RegisterGlobalSingle(new LevelValidator(staticDataService));
+        }
+        
+
+        private static LevelFactory RegisterLevelFactory(StaticDataService staticDataService,
+            LevelValidator levelValidator)
+        {
+            return ServiceLocator.Container.RegisterGlobalSingle(new LevelFactory(staticDataService, levelValidator));
         }
 
 
-        private static void RegisterStaticDataService()
+        private static StaticDataService RegisterStaticDataService()
         {
-            ServiceLocator.Container.RegisterGlobalSingle(new StaticDataService());
+            return ServiceLocator.Container.RegisterGlobalSingle(new StaticDataService());
         }
 
 
-        private SceneLoader RegisterSceneLoader(LoadingScreen loadingScreen)
+        private static SceneLoader RegisterSceneLoader(LoadingScreen loadingScreen)
         {
             SceneLoader sceneLoader =
                 ServiceLocator.Container.RegisterGlobalSingle(new SceneLoader(loadingScreen));
