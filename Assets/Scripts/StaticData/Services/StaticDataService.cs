@@ -11,6 +11,7 @@ namespace StaticData.Services
     {
         private Dictionary<int, LevelConfig> levelConfigs = new Dictionary<int, LevelConfig>();
         private Dictionary<ShapeID, ShapeConfig> shapeConfigs = new Dictionary<ShapeID, ShapeConfig>();
+        public AnimationsStaticData AnimationsStaticData { get; private set; }
 
 
         public void Init()
@@ -23,6 +24,14 @@ namespace StaticData.Services
         {
             LoadLevelsData();
             LoadShapesData();
+            LoadAnimationsData();
+        }
+
+
+        private void LoadAnimationsData()
+        {
+            AnimationsStaticData =
+                Resources.Load<AnimationsStaticData>(RuntimeConstants.StaticDataPaths.ANIMATIONS_STATIC_DATA);
         }
 
 

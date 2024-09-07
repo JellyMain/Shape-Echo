@@ -11,6 +11,7 @@ namespace ShapeComponents
     {
         [SerializeField] private ShapeAnimator shapeAnimator;
         [SerializeField] private ShapeID shapeID;
+        [SerializeField] private Collider2D col;
         public ShapeID ShapeID => shapeID;
 
         public Action ShapeSelected;
@@ -34,6 +35,12 @@ namespace ShapeComponents
         {
             ShapeSelected -= shapeAnimator.OnShapeSelected;
             ShapeDeselected -= shapeAnimator.OnShapeDeselected;
+        }
+
+
+        public void DisableCollider()
+        {
+            col.enabled = false;
         }
 
 

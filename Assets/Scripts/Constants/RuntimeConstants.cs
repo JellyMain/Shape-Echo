@@ -19,6 +19,7 @@ namespace Constants
         {
             public const string LEVELS_STATIC_DATA = "StaticData/LevelsStaticData";
             public const string SHAPES_STATIC_DATA = "StaticData/ShapesStaticData";
+            public const string ANIMATIONS_STATIC_DATA = "StaticData/AnimationsStaticData";
         }
     }
 }

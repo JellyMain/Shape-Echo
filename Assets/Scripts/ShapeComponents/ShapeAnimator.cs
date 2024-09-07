@@ -1,6 +1,8 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Infrastructure;
+using StaticData.Services;
 using UnityEngine;
 
 
@@ -10,7 +12,6 @@ namespace ShapeComponents
     {
         [SerializeField] private Ease animationEase;
         [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private float enterExitAnimationSpeed;
 
         private const string PULSE_FACTOR = "_PulseFactor";
         private const string INSIDE_WAVE_STRENGTH = "_InsideWaveStrength";
@@ -20,17 +21,20 @@ namespace ShapeComponents
         private Sequence shapeEnteredSequence;
         private Sequence shapeExitedSequence;
         private bool canAnimate = true;
-        
+        private StaticDataService staticDataService;
 
+        
         private void Awake()
         {
+            staticDataService = ServiceLocator.Container.Single<StaticDataService>();
             material = spriteRenderer.material;
         }
         
 
         public void AnimateSpawn()
         {
-            transform.DOScale(Vector3.zero, 1).From().SetEase(animationEase);
+            float duration = staticDataService.AnimationsStaticData.shapeSpawnDuration;
+            transform.DOScale(Vector3.zero, duration).From().SetEase(animationEase);
         }
 
 
@@ -50,8 +54,10 @@ namespace ShapeComponents
             shapeEnteredSequence =
                 DOTween.Sequence().SetSpeedBased().SetAutoKill(false).OnComplete(() => canAnimate = true);
 
+            float duration = staticDataService.AnimationsStaticData.shapePulsingDuration;
+            
             shapeEnteredSequence
-                .Append(material.DOFloat(1, PULSE_FACTOR, enterExitAnimationSpeed));
+                .Append(material.DOFloat(1, PULSE_FACTOR, duration));
         }
 
 
@@ -69,26 +75,20 @@ namespace ShapeComponents
 
             shapeExitedSequence = DOTween.Sequence().SetSpeedBased().SetAutoKill(false).OnComplete(() => canAnimate = true);
 
+            float duration = staticDataService.AnimationsStaticData.shapeStopPulsingDuration;
+            
             shapeExitedSequence
-                .Append(material.DOFloat(0, PULSE_FACTOR, enterExitAnimationSpeed));
+                .Append(material.DOFloat(0, PULSE_FACTOR, duration));
         }
 
         
         public async UniTask AnimateDestroy()
         {
-            await transform.DOScale(0, 0.5f).AsyncWaitForCompletion().AsUniTask();
+            float duration = staticDataService.AnimationsStaticData.shapeDestroyDuration;
+            await transform.DOScale(0, duration).AsyncWaitForCompletion().AsUniTask();
         }
     
         
-        private void OnShapeClickedAnimation()
-        {
-            if (canAnimate)
-            {
-                transform.DOPunchScale(new Vector3(0.3f, 0.3f, 0.3f), 0.5f);
-            }
-        }
-
-
-    
+        
     }
 }

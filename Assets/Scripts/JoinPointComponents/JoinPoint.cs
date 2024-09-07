@@ -12,6 +12,7 @@ namespace JoinPointComponents
         [SerializeField] private ShapeAttractor shapeAttractor;
         [SerializeField] private JoinPointAnimator pointAnimator;
         private LevelValidator levelValidator;
+        public JoinPointAnimator PointAnimator => pointAnimator;
         public int SpawnIndex { get; set; }
 
 

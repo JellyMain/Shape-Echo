@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c5f4854b4bc42bf8157891ad2b42b70, type: 3}
+  m_Script: {fileID: 11500000, guid: 0be04ce940874d4e9d102b80357100ae, type: 3}
   m_Name: LevelsStaticData
   m_EditorClassIdentifier: 
   levelConfigs:
   - levelIndex: 1
-    joinPointShapes: 0100000003000000020000000200000003000000
-    spawnBoxWidth: 15
-    spawnPointsOffset: 0.5
+    joinPointShapes: 0100000003000000020000000100000002000000
+    spawnBoxWidth: 10
