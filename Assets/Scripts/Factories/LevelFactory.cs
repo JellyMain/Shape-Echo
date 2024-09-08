@@ -14,25 +14,21 @@ namespace Factories
     public class LevelFactory
     {
         private readonly StaticDataService staticDataService;
-        private readonly LevelValidator levelValidator;
+        private readonly ShapeSpawner shapeSpawner;
+        private readonly JoinPointsSpawner joinPointsSpawner;
         private float spawnBoxWidth;
         private JoinPoint joinPointPrefab;
-        private readonly List<JoinPoint> spawnedPoints = new List<JoinPoint>();
         private readonly List<Shape> spawnedShapes = new List<Shape>();
 
 
-        public LevelFactory(StaticDataService staticDataService, LevelValidator levelValidator)
+        public LevelFactory(StaticDataService staticDataService, ShapeSpawner shapeSpawner,
+            JoinPointsSpawner joinPointsSpawner)
         {
             this.staticDataService = staticDataService;
-            this.levelValidator = levelValidator;
+            this.shapeSpawner = shapeSpawner;
+            this.joinPointsSpawner = joinPointsSpawner;
         }
-
-
-        public void InitPrefabs()
-        {
-            joinPointPrefab = Resources.Load<JoinPoint>(RuntimeConstants.PrefabPaths.JOIN_POINT);
-        }
-
+        
 
         public async UniTaskVoid CreateLevel(int level)
         {
@@ -60,19 +56,11 @@ namespace Factories
             for (int i = 0; i < joinPoints; i++)
             {
                 Vector2 position = new Vector2(i * equalDistance - spawnBoxWidth / 2, 0);
-                InstantiateJoinPoint(position, i);
+                joinPointsSpawner.SpawnJoinPoint(position);
 
                 int delay = DataUtility.SecondsToMilliseconds(staticDataService.AnimationsStaticData.pointsSpawnDelay);
                 await UniTask.Delay(delay);
             }
-        }
-
-
-        private void InstantiateJoinPoint(Vector2 position, int spawnIndex)
-        {
-            JoinPoint joinPoint = Object.Instantiate(joinPointPrefab, position, Quaternion.identity);
-            joinPoint.SpawnIndex = spawnIndex;
-            spawnedPoints.Add(joinPoint);
         }
 
 
@@ -82,19 +70,17 @@ namespace Factories
             {
                 ShapeID shapeID = currentLevelConfig.joinPointShapes[i];
 
-                Shape prefab = staticDataService.ForShapeID(shapeID).shapePrefab;
-                Shape spawnedShape =
-                    Object.Instantiate(prefab, spawnedPoints[i].transform.position, Quaternion.identity);
-
-                spawnedShape.DisableCollider();
+                Shape spawnedShape = shapeSpawner.SpawnShape(shapeID);
 
                 spawnedShapes.Add(spawnedShape);
 
-                spawnedPoints[i].PointAnimator.OnShapeAttracting();
+                joinPointsSpawner.SpawnedPoints[i].PointAnimator.OnShapeAttracting();
 
                 int delay = DataUtility.SecondsToMilliseconds(staticDataService.AnimationsStaticData.shapesSpawnDelay);
                 await UniTask.Delay(delay);
             }
+            
+            shapeSpawner.ResetCounter();
         }
 
 
@@ -103,17 +89,17 @@ namespace Factories
             for (int i = 0; i < spawnedShapes.Count; i++)
             {
                 await spawnedShapes[i].Kill();
-                spawnedPoints[i].PointAnimator.OnShapeNotAttracting();
+                joinPointsSpawner.SpawnedPoints[i].PointAnimator.OnShapeNotAttracting();
             }
         }
 
 
         public async void CleanLevel()
         {
-            foreach (JoinPoint point in spawnedPoints)
+            foreach (JoinPoint point in joinPointsSpawner.SpawnedPoints)
             {
                 point.Kill();
-                
+
                 int delay = DataUtility.SecondsToMilliseconds(staticDataService.AnimationsStaticData.cleanLevelDelay);
                 await Task.Delay(delay);
             }

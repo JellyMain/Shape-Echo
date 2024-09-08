@@ -9,37 +9,30 @@ using UnityEngine.EventSystems;
 
 namespace UI
 {
-    public class ShapeButton : MonoBehaviour, IBeginDragHandler, IDragHandler
+    public class ShapeButton : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] private ShapeID shapeID;
-        private ShapeMover shapeMover;
         private StaticDataService staticDataService;
+        private ShapeSpawner shapeSpawner;
 
 
         private void Awake()
         {
             staticDataService = ServiceLocator.Container.Single<StaticDataService>();
-            shapeMover = ServiceLocator.Container.Single<ShapeMover>();
+            shapeSpawner = ServiceLocator.Container.Single<ShapeSpawner>();
+        }
+
+        
+
+        private void OnButtonClick()
+        {
+            shapeSpawner.SpawnShape(shapeID);
         }
 
 
-
-        public void OnBeginDrag(PointerEventData eventData)
+        public void OnPointerClick(PointerEventData eventData)
         {
-            CreateAndSelectShape();
-        }
-
-
-        public void OnDrag(PointerEventData eventData) { }
-
-
-        private void CreateAndSelectShape()
-        {
-            Shape prefab = staticDataService.ForShapeID(shapeID).shapePrefab;
-
-            Vector2 buttonPosition = Camera.main.ScreenToWorldPoint(transform.position);
-            Shape createdShape = Instantiate(prefab, buttonPosition, Quaternion.identity);
-            shapeMover.SelectedShape = createdShape;
+            OnButtonClick();
         }
     }
 }

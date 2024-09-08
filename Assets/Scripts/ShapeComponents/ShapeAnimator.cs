@@ -37,7 +37,6 @@ namespace ShapeComponents
             transform.DOScale(Vector3.zero, duration).From().SetEase(animationEase);
         }
 
-
         
         public void OnShapeSelected()
         {
@@ -87,8 +86,5 @@ namespace ShapeComponents
             float duration = staticDataService.AnimationsStaticData.shapeDestroyDuration;
             await transform.DOScale(0, duration).AsyncWaitForCompletion().AsUniTask();
         }
-    
-        
-        
     }
 }

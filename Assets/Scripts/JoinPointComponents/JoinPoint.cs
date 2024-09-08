@@ -6,10 +6,9 @@ using UnityEngine;
 
 namespace JoinPointComponents
 {
-    [RequireComponent(typeof(ShapeAttractor), typeof(JoinPointAnimator))]
+    [RequireComponent(typeof(JoinPointAnimator))]
     public class JoinPoint : MonoBehaviour
     {
-        [SerializeField] private ShapeAttractor shapeAttractor;
         [SerializeField] private JoinPointAnimator pointAnimator;
         private LevelValidator levelValidator;
         public JoinPointAnimator PointAnimator => pointAnimator;
@@ -30,19 +29,19 @@ namespace JoinPointComponents
 
         private void OnEnable()
         {
-            shapeAttractor.ShapeAttracting += levelValidator.AddShape;
-            shapeAttractor.ShapeNotAttracting += levelValidator.RemoveShape;
-            shapeAttractor.ShapeAttracting += pointAnimator.OnShapeAttracting;
-            shapeAttractor.ShapeNotAttracting += pointAnimator.OnShapeNotAttracting;
+            // shapeAttractor.ShapeAttracting += levelValidator.AddShape;
+            // shapeAttractor.ShapeNotAttracting += levelValidator.RemoveShape;
+            // shapeAttractor.ShapeAttracting += pointAnimator.OnShapeAttracting;
+            // shapeAttractor.ShapeNotAttracting += pointAnimator.OnShapeNotAttracting;
         }
 
 
         private void OnDisable()
         {
-            shapeAttractor.ShapeAttracting -= levelValidator.AddShape;
-            shapeAttractor.ShapeNotAttracting -= levelValidator.RemoveShape;
-            shapeAttractor.ShapeAttracting -= pointAnimator.OnShapeAttracting;
-            shapeAttractor.ShapeNotAttracting -= pointAnimator.OnShapeNotAttracting;
+            // shapeAttractor.ShapeAttracting -= levelValidator.AddShape;
+            // shapeAttractor.ShapeNotAttracting -= levelValidator.RemoveShape;
+            // shapeAttractor.ShapeAttracting -= pointAnimator.OnShapeAttracting;
+            // shapeAttractor.ShapeNotAttracting -= pointAnimator.OnShapeNotAttracting;
         }
 
 
