@@ -21,7 +21,7 @@ namespace Infrastructure.Installers.Global
             InitServices();
         }
 
-
+        
         private void Start()
         {
             gameStateMachine.Enter<BootstrapState>();
@@ -32,14 +32,11 @@ namespace Infrastructure.Installers.Global
         {
             RegisterInputService();
 
-            JoinPointsSpawner joinPointsSpawner = RegisterJoinPointsSpawner();
             StaticDataService staticDataService = RegisterStaticDataService();
-            ShapeSpawner shapeSpawner = RegisterShapeSpawner(joinPointsSpawner, staticDataService);
-            LevelValidator levelValidator = RegisterLevelValidator(staticDataService);
+            LevelFactory levelFactory = RegisterLevelFactory();
             LoadingScreen loadingScreen = CreateLoadingScreen();
             SceneLoader sceneLoader = RegisterSceneLoader(loadingScreen);
             UIFactory uiFactory = RegisterUIFactory();
-            LevelFactory levelFactory = RegisterLevelFactory(staticDataService, shapeSpawner, joinPointsSpawner);
 
             gameStateMachine = RegisterGameStateMachine();
 
@@ -47,23 +44,16 @@ namespace Infrastructure.Installers.Global
         }
 
 
-        private ShapeSpawner RegisterShapeSpawner(JoinPointsSpawner joinPointsSpawner,
-            StaticDataService staticDataService)
+        private static LevelFactory RegisterLevelFactory()
         {
-            return ServiceLocator.Container.RegisterGlobalSingle(new ShapeSpawner(joinPointsSpawner,
-                staticDataService));
+            return ServiceLocator.Container.RegisterGlobalSingle(new LevelFactory());
         }
 
-
-
-
-
+        
         private static void InitServices()
         {
             ServiceLocator.Container.Single<GameStateMachine>().Init();
             ServiceLocator.Container.Single<StaticDataService>().Init();
-            ServiceLocator.Container.Single<LevelValidator>().Init();
-            ServiceLocator.Container.Single<JoinPointsSpawner>().Init();
         }
 
 
@@ -73,30 +63,10 @@ namespace Infrastructure.Installers.Global
             ServiceLocator.Container.RegisterGlobalSingle(new BootstrapState(gameStateMachine));
             ServiceLocator.Container.RegisterGlobalSingle(new LoadProgressState(gameStateMachine));
             ServiceLocator.Container.RegisterGlobalSingle(new LoadMetaState(gameStateMachine, sceneLoader));
-            ServiceLocator.Container.RegisterGlobalSingle(new LoadLevelState(gameStateMachine, sceneLoader, uiFactory,
-                levelFactory));
+            ServiceLocator.Container.RegisterGlobalSingle(new LoadLevelState(gameStateMachine, sceneLoader, uiFactory, levelFactory));
             ServiceLocator.Container.RegisterGlobalSingle(new GameLoopState(gameStateMachine));
         }
 
-
-        private static LevelValidator RegisterLevelValidator(StaticDataService staticDataService)
-        {
-            return ServiceLocator.Container.RegisterGlobalSingle(new LevelValidator(staticDataService));
-        }
-
-
-        private static LevelFactory RegisterLevelFactory(StaticDataService staticDataService, ShapeSpawner shapeSpawner,
-            JoinPointsSpawner joinPointsSpawner)
-        {
-            return ServiceLocator.Container.RegisterGlobalSingle(new LevelFactory(staticDataService, shapeSpawner,
-                joinPointsSpawner));
-        }
-
-
-        private JoinPointsSpawner RegisterJoinPointsSpawner()
-        {
-            return ServiceLocator.Container.RegisterGlobalSingle(new JoinPointsSpawner());
-        }
 
 
         private static StaticDataService RegisterStaticDataService()

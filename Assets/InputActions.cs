@@ -76,27 +76,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ""id"": ""ad5365fb-09b4-4040-93e3-b4f70b036159"",
             ""actions"": [
                 {
-                    ""name"": ""TouchPosition"",
+                    ""name"": ""Move"",
                     ""type"": ""Value"",
-                    ""id"": ""01694a6c-604a-49bb-9d67-0e70952dbdd7"",
+                    ""id"": ""9ef93447-ac30-4b85-9ac0-22d68855b65d"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""DragStarted"",
+                    ""name"": ""Dash"",
                     ""type"": ""Button"",
-                    ""id"": ""80256e1c-efc0-48a5-a761-d928fbb3cccf"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""TouchContact"",
-                    ""type"": ""Button"",
-                    ""id"": ""fa756605-4c5b-4a0b-aa90-c738ab225115"",
+                    ""id"": ""0b837992-1130-48fe-b747-04ad7b0c847e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -105,35 +96,68 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""4db8b24c-98b5-49cf-8fb1-d52e537c99e7"",
-                    ""path"": ""<Mouse>/position"",
+                    ""name"": ""2D Vector"",
+                    ""id"": ""013b319a-6a32-48ff-875c-c8e25ddf48db"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""TouchPosition"",
-                    ""isComposite"": false,
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""b9fabc8c-94ad-490d-ab2f-201da41d1721"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""DragStarted"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8967a709-e08f-4628-b18a-a5e7e41dd987"",
-                    ""path"": ""<Mouse>/press"",
+                    ""name"": ""up"",
+                    ""id"": ""96837e86-4943-48cf-87d6-305191b35eb4"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""TouchContact"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""51bc3e23-84ec-4918-9971-1ad0704c7063"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""ad368d4a-f7ef-494c-871c-5e1f1e383153"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""e27df93c-936b-4e81-83cf-40e62d216429"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d041299c-ba6e-4eee-9703-3dcdcea9aee8"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -148,9 +172,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_MobileInput_DragStarted = m_MobileInput.FindAction("DragStarted", throwIfNotFound: true);
         // PcInput
         m_PcInput = asset.FindActionMap("PcInput", throwIfNotFound: true);
-        m_PcInput_TouchPosition = m_PcInput.FindAction("TouchPosition", throwIfNotFound: true);
-        m_PcInput_DragStarted = m_PcInput.FindAction("DragStarted", throwIfNotFound: true);
-        m_PcInput_TouchContact = m_PcInput.FindAction("TouchContact", throwIfNotFound: true);
+        m_PcInput_Move = m_PcInput.FindAction("Move", throwIfNotFound: true);
+        m_PcInput_Dash = m_PcInput.FindAction("Dash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -266,16 +289,14 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     // PcInput
     private readonly InputActionMap m_PcInput;
     private List<IPcInputActions> m_PcInputActionsCallbackInterfaces = new List<IPcInputActions>();
-    private readonly InputAction m_PcInput_TouchPosition;
-    private readonly InputAction m_PcInput_DragStarted;
-    private readonly InputAction m_PcInput_TouchContact;
+    private readonly InputAction m_PcInput_Move;
+    private readonly InputAction m_PcInput_Dash;
     public struct PcInputActions
     {
         private @InputActions m_Wrapper;
         public PcInputActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @TouchPosition => m_Wrapper.m_PcInput_TouchPosition;
-        public InputAction @DragStarted => m_Wrapper.m_PcInput_DragStarted;
-        public InputAction @TouchContact => m_Wrapper.m_PcInput_TouchContact;
+        public InputAction @Move => m_Wrapper.m_PcInput_Move;
+        public InputAction @Dash => m_Wrapper.m_PcInput_Dash;
         public InputActionMap Get() { return m_Wrapper.m_PcInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -285,28 +306,22 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PcInputActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PcInputActionsCallbackInterfaces.Add(instance);
-            @TouchPosition.started += instance.OnTouchPosition;
-            @TouchPosition.performed += instance.OnTouchPosition;
-            @TouchPosition.canceled += instance.OnTouchPosition;
-            @DragStarted.started += instance.OnDragStarted;
-            @DragStarted.performed += instance.OnDragStarted;
-            @DragStarted.canceled += instance.OnDragStarted;
-            @TouchContact.started += instance.OnTouchContact;
-            @TouchContact.performed += instance.OnTouchContact;
-            @TouchContact.canceled += instance.OnTouchContact;
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(IPcInputActions instance)
         {
-            @TouchPosition.started -= instance.OnTouchPosition;
-            @TouchPosition.performed -= instance.OnTouchPosition;
-            @TouchPosition.canceled -= instance.OnTouchPosition;
-            @DragStarted.started -= instance.OnDragStarted;
-            @DragStarted.performed -= instance.OnDragStarted;
-            @DragStarted.canceled -= instance.OnDragStarted;
-            @TouchContact.started -= instance.OnTouchContact;
-            @TouchContact.performed -= instance.OnTouchContact;
-            @TouchContact.canceled -= instance.OnTouchContact;
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(IPcInputActions instance)
@@ -331,8 +346,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     }
     public interface IPcInputActions
     {
-        void OnTouchPosition(InputAction.CallbackContext context);
-        void OnDragStarted(InputAction.CallbackContext context);
-        void OnTouchContact(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
 }

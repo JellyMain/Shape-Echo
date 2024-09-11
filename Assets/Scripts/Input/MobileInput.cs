@@ -11,6 +11,7 @@ namespace Input
         private readonly InputActions inputActions;
         public event Action DragStarted;
         public event Action DragEnded;
+        public event Action Dashed;
 
 
         public MobileInput()
@@ -23,7 +24,7 @@ namespace Input
         }
 
 
-        public Vector2 GetTouchWorldPosition()
+        public Vector2 GetNormalizedMoveInput()
         {
             Vector2 touchPosition = inputActions.MobileInput.TouchPosition.ReadValue<Vector2>();
             return Camera.main.ScreenToWorldPoint(touchPosition);

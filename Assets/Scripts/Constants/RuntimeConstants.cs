@@ -4,7 +4,7 @@ namespace Constants
     {
         public static class PrefabPaths
         {
-            public const string JOIN_POINT = "Prefabs/JoinPoint";
+            public const string PLAYER = "Prefabs/Shapes/Player";
         }
 
 

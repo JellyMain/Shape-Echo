@@ -9,37 +9,30 @@ namespace Input
     public class PcInput : IInput
     {
         private readonly InputActions inputActions;
-        public event Action DragStarted;
-        public event Action DragEnded;
-
-
+        public event Action Dashed;
+        
+        
         public PcInput()
         {
             inputActions = new InputActions();
-
             inputActions.PcInput.Enable();
-            inputActions.PcInput.DragStarted.performed += OnDragStarted;
-            inputActions.PcInput.DragStarted.canceled += OnDragEnded;
+
+            inputActions.PcInput.Dash.performed += Dash;
         }
 
 
-        public Vector2 GetTouchWorldPosition()
+        private void Dash(InputAction.CallbackContext callbackContext)
         {
-            Vector2 mousePosition = inputActions.PcInput.TouchPosition.ReadValue<Vector2>();
-            return Camera.main.ScreenToWorldPoint(mousePosition);
+            Dashed?.Invoke();
         }
-    
-    
-        private void OnDragStarted(InputAction.CallbackContext callbackContext)
+        
+
+        public Vector2 GetNormalizedMoveInput()
         {
-            DragStarted?.Invoke();
+            return inputActions.PcInput.Move.ReadValue<Vector2>();
         }
 
 
-        private void OnDragEnded(InputAction.CallbackContext callbackContext)
-        {
-            DragEnded?.Invoke();
-        }
-    
+       
     }
 }
