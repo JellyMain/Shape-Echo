@@ -18,6 +18,9 @@ namespace PlayerComponents
         [SerializeField] private float moveSpeed;
         private InputService inputService;
         private bool isDashing;
+        public bool isMoving;
+        public event Action DashStarted;
+        public event Action DashEnded;
 
 
         private void Awake()
@@ -48,7 +51,11 @@ namespace PlayerComponents
         {
             if (isDashing) return;
 
+            
             Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
+
+            isMoving = moveDirection != Vector2.zero;
+            
             rb2d.velocity = moveDirection * moveSpeed;
             RotateToMoveDirection(moveDirection);
         }
@@ -64,22 +71,24 @@ namespace PlayerComponents
         {
             if (!isDashing)
             {
+                DashStarted?.Invoke();
                 isDashing = true;
                 Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
                 rb2d.velocity = moveDirection * dashSpeed;
-                transform.up = moveDirection;
+                transform.right = moveDirection;
                 
                 int delay = dashDuration.SecondsToMilliseconds();
                 await UniTask.Delay(delay);
 
                 isDashing = false;
+                DashEnded?.Invoke();
             }
         }
 
 
         private void RotateToMoveDirection(Vector2 moveDirection)
         {
-            transform.up = Vector2.Lerp(transform.up, moveDirection, Time.deltaTime * rotationSpeed);
+            transform.right = Vector2.Lerp(transform.right, moveDirection, Time.deltaTime * rotationSpeed);
         }
     }
 }
