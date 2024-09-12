@@ -12,8 +12,10 @@ namespace Input
         public event Action DragStarted;
         public event Action DragEnded;
         public event Action Dashed;
+        public event Action Shot;
 
-
+        
+        
         public MobileInput()
         {
             inputActions = new InputActions();
@@ -29,6 +31,15 @@ namespace Input
             Vector2 touchPosition = inputActions.MobileInput.TouchPosition.ReadValue<Vector2>();
             return Camera.main.ScreenToWorldPoint(touchPosition);
         }
+
+
+        public Vector2 GetWorldMousePosition()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        
 
 
         private void OnDragStarted(InputAction.CallbackContext callbackContext)

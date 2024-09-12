@@ -48,6 +48,6 @@ TagManager:
   - name: Shape
     uniqueID: 1769453155
     locked: 0
-  - name: JoinPoint
-    uniqueID: 12343997
+  - name: Weapon
+    uniqueID: 846506943
     locked: 0

@@ -92,6 +92,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""c202c19a-7454-4526-99fd-0741b381d1c3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MousePos"",
+                    ""type"": ""Value"",
+                    ""id"": ""5a5530c7-03fc-4eeb-9b7c-28eaf572cc41"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -160,6 +178,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""108ac9ce-d3b1-46ff-9f05-d46d37c9523d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0334280c-da43-467f-8810-d894a21d6442"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePos"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -174,6 +214,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PcInput = asset.FindActionMap("PcInput", throwIfNotFound: true);
         m_PcInput_Move = m_PcInput.FindAction("Move", throwIfNotFound: true);
         m_PcInput_Dash = m_PcInput.FindAction("Dash", throwIfNotFound: true);
+        m_PcInput_Shoot = m_PcInput.FindAction("Shoot", throwIfNotFound: true);
+        m_PcInput_MousePos = m_PcInput.FindAction("MousePos", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -291,12 +333,16 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IPcInputActions> m_PcInputActionsCallbackInterfaces = new List<IPcInputActions>();
     private readonly InputAction m_PcInput_Move;
     private readonly InputAction m_PcInput_Dash;
+    private readonly InputAction m_PcInput_Shoot;
+    private readonly InputAction m_PcInput_MousePos;
     public struct PcInputActions
     {
         private @InputActions m_Wrapper;
         public PcInputActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PcInput_Move;
         public InputAction @Dash => m_Wrapper.m_PcInput_Dash;
+        public InputAction @Shoot => m_Wrapper.m_PcInput_Shoot;
+        public InputAction @MousePos => m_Wrapper.m_PcInput_MousePos;
         public InputActionMap Get() { return m_Wrapper.m_PcInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -312,6 +358,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+            @MousePos.started += instance.OnMousePos;
+            @MousePos.performed += instance.OnMousePos;
+            @MousePos.canceled += instance.OnMousePos;
         }
 
         private void UnregisterCallbacks(IPcInputActions instance)
@@ -322,6 +374,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+            @MousePos.started -= instance.OnMousePos;
+            @MousePos.performed -= instance.OnMousePos;
+            @MousePos.canceled -= instance.OnMousePos;
         }
 
         public void RemoveCallbacks(IPcInputActions instance)
@@ -348,5 +406,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
+        void OnMousePos(InputAction.CallbackContext context);
     }
 }
