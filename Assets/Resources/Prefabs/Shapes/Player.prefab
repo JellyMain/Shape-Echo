@@ -51,7 +51,8 @@ MonoBehaviour:
   rotationSpeed: 20
   dashSpeed: 50
   dashDuration: 0.2
-  moveSpeed: 10
+  moveSpeed: 20
+  isMoving: 0
 --- !u!61 &9033020133969925495
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -155,7 +156,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8456152551804416045}
@@ -174,6 +175,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trailRenderer: {fileID: 3475620813326803224}
   playerMovement: {fileID: -7101245873845170213}
+  particles: {fileID: 5282508323240942763}
+  squeezeAmount: 0.6
+  squeezeDuration: 0.2
+  unsqueezeDuration: 0.3
 --- !u!212 &4059234128735059466
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -194,7 +199,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fe28366d6a52c3f4fa3756606d1bb2d1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -247,7 +252,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fe28366d6a52c3f4fa3756606d1bb2d1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -299,16 +304,16 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 1, b: 0.2694478, a: 1}
-      key1: {r: 0.7531392, g: 1, b: 0.073584795, a: 1}
-      key2: {r: 1, g: 0.8894851, b: 0.07843137, a: 0}
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 0.70980394}
+      key2: {r: 1, g: 1, b: 1, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 35389
+      ctime1: 65535
       ctime2: 65535
       ctime3: 0
       ctime4: 0
@@ -316,7 +321,7 @@ TrailRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65535
+      atime1: 49113
       atime2: 0
       atime3: 0
       atime4: 0
@@ -325,7 +330,7 @@ TrailRenderer:
       atime7: 0
       m_Mode: 0
       m_ColorSpace: 0
-      m_NumColorKeys: 3
+      m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 0
@@ -356,7 +361,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -529,7 +534,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.5113207, g: 1, b: 0.55406994, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5083,7 +5088,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fe28366d6a52c3f4fa3756606d1bb2d1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

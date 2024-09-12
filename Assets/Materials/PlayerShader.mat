@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TriangleMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: d47df7c40738dac49a6bbd386c56dee7, type: 3}
+  m_Name: PlayerShader
+  m_Shader: {fileID: -6465566751694194690, guid: 7a8043ec161de4a4db2d322192ed879a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 586e4ba4307d9e546a118da3ad978634, type: 3}
+        m_Texture: {fileID: 2800000, guid: d9f1177f0224bad4785c6c78697d8fbc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -40,20 +40,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _InsideWaveCount: 0.3
-    - _InsideWaveSpeed: 0.3
-    - _InsideWaveStrength: 0.8
-    - _OutsideWaveCount: 0
-    - _OutsideWaveSpeed: 1
-    - _OutsideWaveStrength: 0.8
-    - _PulseFactor: 0
+    m_Floats: []
     m_Colors:
-    - _MainColor: {r: 0.54620147, g: 5.656853, b: 0, a: 0}
-    - _PulseColor: {r: 0, g: 0, b: 0, a: 0}
-    - _RippleCenter: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 0, g: 4.112247, b: 4.237094, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &391397892731557509
+--- !u!114 &2800297089223527486
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

@@ -10,41 +10,67 @@ namespace PlayerComponents
     {
         [SerializeField, Required] private TrailRenderer trailRenderer;
         [SerializeField, Required] private PlayerMovement playerMovement;
-        private bool canDeform;
-        
+        [SerializeField, Required] private ParticleSystem particles;
+        [SerializeField] private float squeezeAmount = 0.6f;
+        [SerializeField] private float squeezeDuration = 0.1f;
+        [SerializeField] private float unsqueezeDuration = 0.3f;
+
 
         private void OnEnable()
         {
             playerMovement.DashStarted += EnableTrail;
-            playerMovement.DashEnded += DisableTrial;
+            playerMovement.DashEnded += DisableTrail;
         }
 
 
         private void OnDisable()
         {
             playerMovement.DashStarted -= EnableTrail;
-            playerMovement.DashEnded -= DisableTrial;
+            playerMovement.DashEnded -= DisableTrail;
         }
 
+
+        private void Update()
+        {
+            if (playerMovement.isMoving)
+            {
+                EnableMovingEffect();
+            }
+            else
+            {
+                DisableMovingEffect();
+            }
+        }
 
         private void EnableTrail()
         {
             trailRenderer.emitting = true;
         }
 
-
-        private void DisableTrial()
+        private void DisableTrail()
         {
             trailRenderer.emitting = false;
         }
 
-
-        private void SqueezePlayer()
+        
+        private void EnableMovingEffect()
         {
-            if (playerMovement.isMoving)
-            {
-                transform.DOScaleY(0.6f, 0.5f);
-            }
+            if (Mathf.Approximately(transform.localScale.y, squeezeAmount)) return;
+
+            transform.DOScaleY(squeezeAmount, squeezeDuration).SetEase(Ease.OutQuad);
+            transform.DOScaleX(1.2f, squeezeDuration).SetEase(Ease.OutQuad);
+            particles.Play();
+
+        }
+
+        
+        private void DisableMovingEffect()
+        {
+            if (Mathf.Approximately(transform.localScale.y, 1)) return;
+
+            transform.DOScaleY(1, unsqueezeDuration).SetEase(Ease.OutQuad);
+            transform.DOScaleX(1, unsqueezeDuration).SetEase(Ease.OutQuad);
+            particles.Stop();
         }
     }
 }

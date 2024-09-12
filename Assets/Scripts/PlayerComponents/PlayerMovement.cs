@@ -45,19 +45,24 @@ namespace PlayerComponents
         {
             Move();
         }
-        
+
+
+        private void Update()
+        {
+            RotateToMoveDirection();
+        }
+
 
         private void Move()
         {
             if (isDashing) return;
 
-            
+
             Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
 
             isMoving = moveDirection != Vector2.zero;
-            
+
             rb2d.velocity = moveDirection * moveSpeed;
-            RotateToMoveDirection(moveDirection);
         }
 
 
@@ -76,7 +81,7 @@ namespace PlayerComponents
                 Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
                 rb2d.velocity = moveDirection * dashSpeed;
                 transform.right = moveDirection;
-                
+
                 int delay = dashDuration.SecondsToMilliseconds();
                 await UniTask.Delay(delay);
 
@@ -86,9 +91,15 @@ namespace PlayerComponents
         }
 
 
-        private void RotateToMoveDirection(Vector2 moveDirection)
+        private void RotateToMoveDirection()
         {
-            transform.right = Vector2.Lerp(transform.right, moveDirection, Time.deltaTime * rotationSpeed);
+            Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
+
+            float targetAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+
+            Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
+            
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
     }
 }
