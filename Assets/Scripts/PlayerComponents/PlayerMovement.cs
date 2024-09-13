@@ -12,10 +12,10 @@ namespace PlayerComponents
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField, Required] private Rigidbody2D rb2d;
-        [SerializeField] private float rotationSpeed;
-        [SerializeField] private float dashSpeed = 30;
-        [SerializeField] private float dashDuration = 1;
-        [SerializeField] private float moveSpeed;
+        public float RotationSpeed { get; set; }
+        public float DashSpeed { get; set; }
+        public float DashDuration { get; set; }
+        public float MoveSpeed { get; set; }
         private InputService inputService;
         private bool isDashing;
         public bool isMoving;
@@ -62,7 +62,7 @@ namespace PlayerComponents
 
             isMoving = moveDirection != Vector2.zero;
 
-            rb2d.velocity = moveDirection * moveSpeed;
+            rb2d.velocity = moveDirection * MoveSpeed;
         }
 
 
@@ -79,10 +79,10 @@ namespace PlayerComponents
                 DashStarted?.Invoke();
                 isDashing = true;
                 Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
-                rb2d.velocity = moveDirection * dashSpeed;
+                rb2d.velocity = moveDirection * DashSpeed;
                 transform.right = moveDirection;
 
-                int delay = dashDuration.SecondsToMilliseconds();
+                int delay = DashDuration.SecondsToMilliseconds();
                 await UniTask.Delay(delay);
 
                 isDashing = false;
@@ -98,8 +98,8 @@ namespace PlayerComponents
             float targetAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
 
             Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
-            
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * RotationSpeed);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Constants
     {
         public static class PrefabPaths
         {
-            public const string PLAYER = "Prefabs/Shapes/Player";
+            public const string PLAYER = "Prefabs/Player/Player";
         }
 
 
@@ -17,9 +17,7 @@ namespace Constants
     
         public static class StaticDataPaths
         {
-            public const string LEVELS_STATIC_DATA = "StaticData/LevelsStaticData";
-            public const string SHAPES_STATIC_DATA = "StaticData/ShapesStaticData";
-            public const string ANIMATIONS_STATIC_DATA = "StaticData/AnimationsStaticData";
+            public const string PLAYER_STATIC_DATA = "StaticData/PlayerStaticData";
         }
     }
 }

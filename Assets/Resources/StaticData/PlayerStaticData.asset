@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799fa90958ed445b8a62690b79f41b0f, type: 3}
+  m_Name: PlayerStaticData
+  m_EditorClassIdentifier: 
+  defaultWeaponBase: {fileID: 6047761845738362999, guid: 9af446cd44d40844a83ca34a98c1d82f, type: 3}
+  weaponRotationSpeed: 10
+  rotationSpeed: 10
+  dashSpeed: 30
+  dashDuration: 1
+  moveSpeed: 20

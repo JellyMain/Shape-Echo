@@ -33,7 +33,7 @@ namespace Infrastructure.Installers.Global
             RegisterInputService();
 
             StaticDataService staticDataService = RegisterStaticDataService();
-            LevelFactory levelFactory = RegisterLevelFactory();
+            LevelFactory levelFactory = RegisterLevelFactory(staticDataService);
             LoadingScreen loadingScreen = CreateLoadingScreen();
             SceneLoader sceneLoader = RegisterSceneLoader(loadingScreen);
             UIFactory uiFactory = RegisterUIFactory();
@@ -44,9 +44,9 @@ namespace Infrastructure.Installers.Global
         }
 
 
-        private static LevelFactory RegisterLevelFactory()
+        private static LevelFactory RegisterLevelFactory(StaticDataService staticDataService)
         {
-            return ServiceLocator.Container.RegisterGlobalSingle(new LevelFactory());
+            return ServiceLocator.Container.RegisterGlobalSingle(new LevelFactory(staticDataService));
         }
 
         
