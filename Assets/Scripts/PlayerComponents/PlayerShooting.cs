@@ -10,9 +10,10 @@ namespace PlayerComponents
     public class PlayerShooting : MonoBehaviour
     {
         [SerializeField] private Transform weaponHand;
+        [SerializeField] private Collider2D col;
         public WeaponBase WeaponBasePrefab { get; set; }
         public float WeaponRotationSpeed { get; set; }
-        private WeaponBase currentWeaponBase;
+        private WeaponBase currentWeapon;
         private Vector2 mousePosition;
         private InputService inputService;
 
@@ -44,14 +45,25 @@ namespace PlayerComponents
 
         public void CreateWeapon()
         {
-            currentWeaponBase = Instantiate(WeaponBasePrefab, weaponHand.transform.position, Quaternion.identity, weaponHand);
+            currentWeapon = Instantiate(WeaponBasePrefab, weaponHand.transform.position, Quaternion.identity, weaponHand);
+        }
+
+
+        public void SetWeapon(WeaponBase weapon)
+        {
+            Destroy(currentWeapon.gameObject);
+            
+            weapon.transform.SetParent(weaponHand);
+            weapon.transform.position = weaponHand.position;
+            
+            currentWeapon = weapon;
         }
 
 
         private void OnShot()
         {
-            Vector2 direction = (mousePosition - (Vector2)currentWeaponBase.transform.position).normalized;
-            currentWeaponBase.Shoot(direction);
+            Vector2 direction = (mousePosition - (Vector2)currentWeapon.transform.position).normalized;
+            currentWeapon.Shoot(direction);
         }
 
 
@@ -59,14 +71,14 @@ namespace PlayerComponents
         {
             mousePosition = inputService.CurrentInput.GetWorldMousePosition();
 
-            Vector2 targetPosition = mousePosition - (Vector2)currentWeaponBase.transform.position;
+            Vector2 targetPosition = mousePosition - (Vector2)currentWeapon.transform.position;
 
             float targetAngle = Mathf.Atan2(targetPosition.y, targetPosition.x) * Mathf.Rad2Deg;
 
             Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
 
-            currentWeaponBase.transform.rotation =
-                Quaternion.Slerp(currentWeaponBase.transform.rotation, targetRotation,
+            currentWeapon.transform.rotation =
+                Quaternion.Slerp(currentWeapon.transform.rotation, targetRotation,
                     Time.deltaTime * WeaponRotationSpeed);
         }
     }

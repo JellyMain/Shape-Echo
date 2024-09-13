@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 5929211340411311575}
   - component: {fileID: -7101245873845170213}
   - component: {fileID: 1514568253118067421}
+  - component: {fileID: 7145051086657863968}
   - component: {fileID: 9033020133969925495}
   - component: {fileID: 2598430418850522762}
   m_Layer: 6
@@ -110,6 +111,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponHand: {fileID: 4288334038067771165}
+--- !u!114 &7145051086657863968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7186857733965775288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90d0fff460a743fc805ed813023467c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerShooting: {fileID: 1514568253118067421}
 --- !u!61 &9033020133969925495
 BoxCollider2D:
   m_ObjectHideFlags: 0
