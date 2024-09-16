@@ -14,8 +14,22 @@ namespace PlayerComponents
         public WeaponBase WeaponBasePrefab { get; set; }
         public float WeaponRotationSpeed { get; set; }
         private WeaponBase currentWeapon;
+        private int maxAmmo;
+        private int currentAmmo;
+        private float reloadDuration;
         private Vector2 mousePosition;
         private InputService inputService;
+        private float shotCooldown;
+        private float shotTimer;
+        private bool isShooting;
+        private float reloadTimer;
+        private bool isReloading;
+        
+
+        public event Action<int> Reloaded;
+        public event Action<int> Shot;
+        public event Action<int> WeaponSet;
+        public event Action<float> ReloadStarted;
 
 
         private void Awake()
@@ -24,62 +38,146 @@ namespace PlayerComponents
         }
 
 
+        private void Start()
+        {
+            CreateWeapon();
+        }
+
+
         private void OnEnable()
         {
-            inputService.CurrentInput.Shot += OnShot;
+            inputService.CurrentInput.ShotPressed += StartShooting;
+            inputService.CurrentInput.ShotReleased += StopShooting;
+            inputService.CurrentInput.ReloadPressed += StartReload;
         }
 
 
         private void OnDisable()
         {
-            inputService.CurrentInput.Shot -= OnShot;
+            inputService.CurrentInput.ShotPressed -= StartShooting;
+            inputService.CurrentInput.ShotReleased -= StopShooting;
+            inputService.CurrentInput.ReloadPressed -= StartReload;
         }
 
 
         private void Update()
         {
             RotateWeapon();
+            TickShot();
+            TickReloadTimer();
         }
 
 
-
-        public void CreateWeapon()
+        private void CreateWeapon()
         {
-            currentWeapon = Instantiate(WeaponBasePrefab, weaponHand.transform.position, Quaternion.identity, weaponHand);
+            currentWeapon = Instantiate(WeaponBasePrefab, weaponHand.transform.position, Quaternion.identity,
+                weaponHand);
+
+            shotCooldown = currentWeapon.ShotCooldown;
+            maxAmmo = currentWeapon.MaxAmmo;
+            reloadDuration = currentWeapon.ReloadDuration;
+
+            WeaponSet?.Invoke(maxAmmo);
         }
 
 
-        public void SetWeapon(WeaponBase weapon)
+        public void SetNewWeapon(WeaponBase weapon)
         {
             Destroy(currentWeapon.gameObject);
-            
+
             weapon.transform.SetParent(weaponHand);
             weapon.transform.position = weaponHand.position;
-            
+
             currentWeapon = weapon;
+            shotCooldown = currentWeapon.ShotCooldown;
+            maxAmmo = currentWeapon.MaxAmmo;
+            reloadDuration = currentWeapon.ReloadDuration;
+
+            WeaponSet?.Invoke(maxAmmo);
         }
 
 
-        private void OnShot()
+       
+
+
+        private void StartShooting()
         {
-            Vector2 direction = (mousePosition - (Vector2)currentWeapon.transform.position).normalized;
-            currentWeapon.Shoot(direction);
+            isShooting = true;
+        }
+
+
+        private void StopShooting()
+        {
+            shotTimer = 0;
+            isShooting = false;
+        }
+
+
+        private void TickShot()
+        {
+            if (isShooting)
+            {
+                shotTimer -= Time.deltaTime;
+
+                if (shotTimer <= 0)
+                {
+                    shotTimer = shotCooldown;
+
+                    Vector2 direction = (mousePosition - (Vector2)currentWeapon.transform.position).normalized;
+                    currentWeapon.Shoot(direction);
+                    Shot?.Invoke(currentWeapon.CurrentAmmo);
+                }
+            }
+        }
+
+
+        private void TickReloadTimer()
+        {
+            if (isReloading)
+            {
+                reloadTimer -= Time.deltaTime;
+
+                if (reloadTimer <= 0)
+                {
+                    isReloading = false;
+                    currentWeapon.Reload();
+                    Reloaded?.Invoke(currentWeapon.CurrentAmmo);
+                }
+            }
+        }
+
+
+        private void StartReload()
+        {
+            reloadTimer = reloadDuration;
+            isReloading = true;
+            
+            ReloadStarted?.Invoke(reloadDuration);
+        }
+
+
+        private void CancelReload()
+        {
+            reloadTimer = reloadDuration;
         }
 
 
         private void RotateWeapon()
         {
-            mousePosition = inputService.CurrentInput.GetWorldMousePosition();
+            if (currentWeapon != null)
+            {
+                mousePosition = inputService.CurrentInput.GetWorldMousePosition();
 
-            Vector2 targetPosition = mousePosition - (Vector2)currentWeapon.transform.position;
+                Vector2 targetPosition = mousePosition - (Vector2)currentWeapon.transform.position;
 
-            float targetAngle = Mathf.Atan2(targetPosition.y, targetPosition.x) * Mathf.Rad2Deg;
+                float targetAngle = Mathf.Atan2(targetPosition.y, targetPosition.x) * Mathf.Rad2Deg;
 
-            Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
+                Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
 
-            currentWeapon.transform.rotation =
-                Quaternion.Slerp(currentWeapon.transform.rotation, targetRotation,
-                    Time.deltaTime * WeaponRotationSpeed);
+                currentWeapon.transform.rotation =
+                    Quaternion.Slerp(currentWeapon.transform.rotation, targetRotation,
+                        Time.deltaTime * WeaponRotationSpeed);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ namespace Constants
         public static class PrefabPaths
         {
             public const string PLAYER = "Prefabs/Player/Player";
+            public const string HUD = "Prefabs/UI/Hud";
         }
 
 

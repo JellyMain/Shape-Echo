@@ -8,7 +8,9 @@ namespace Input.Interfaces
     {
         public Vector2 GetNormalizedMoveInput();
         public Vector2 GetWorldMousePosition();
-        public event Action Shot;
-        public event Action Dashed;
+        public event Action ShotPressed;
+        public event Action ShotReleased;
+        public event Action DashPressed;
+        public event Action ReloadPressed;
     }
 }

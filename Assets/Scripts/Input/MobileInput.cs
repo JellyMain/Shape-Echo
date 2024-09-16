@@ -11,9 +11,11 @@ namespace Input
         private readonly InputActions inputActions;
         public event Action DragStarted;
         public event Action DragEnded;
-        public event Action Dashed;
-        public event Action Shot;
-
+        public event Action DashPressed;
+        public event Action ShotPressed;
+        public event Action ShotReleased;
+        public event Action ReloadPressed;
+        
         
         
         public MobileInput()

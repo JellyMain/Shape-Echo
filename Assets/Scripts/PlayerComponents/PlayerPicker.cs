@@ -15,7 +15,7 @@ namespace PlayerComponents
         {
             if (other.TryGetComponent(out WeaponBase weapon))
             {
-                playerShooting.SetWeapon(weapon);            
+                playerShooting.SetNewWeapon(weapon);            
             }
         }
 

@@ -2,6 +2,7 @@ using Constants;
 using Factories;
 using Infrastructure.GameStates.Interfaces;
 using Infrastructure.Services;
+using PlayerComponents;
 using UI;
 using UnityEngine;
 
@@ -34,7 +35,8 @@ namespace Infrastructure.GameStates
 
         private void CreateLevel()
         {
-            levelFactory.CreatePlayer(Vector2.zero);
+            PlayerBase player = levelFactory.CreatePlayer(Vector2.zero);
+            uiFactory.CreateHud(player);
         }
     }
 }

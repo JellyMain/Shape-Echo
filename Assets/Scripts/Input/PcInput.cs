@@ -9,8 +9,10 @@ namespace Input
     public class PcInput : IInput
     {
         private readonly InputActions inputActions;
-        public event Action Dashed;
-        public event Action Shot;
+        public event Action DashPressed;
+        public event Action ShotPressed;
+        public event Action ShotReleased;
+        public event Action ReloadPressed;
         
         
         public PcInput()
@@ -20,20 +22,33 @@ namespace Input
 
             inputActions.PcInput.Dash.performed += Dash;
             inputActions.PcInput.Shoot.performed += Shoot;
+            inputActions.PcInput.Shoot.canceled += StopShooting;
+            inputActions.PcInput.Reload.performed += Reload;
+        }
+
+
+        private void Reload(InputAction.CallbackContext obj)
+        {
+            ReloadPressed?.Invoke();
         }
 
 
         private void Dash(InputAction.CallbackContext callbackContext)
         {
-            Dashed?.Invoke();
+            DashPressed?.Invoke();
         }
 
 
         private void Shoot(InputAction.CallbackContext callbackContext)
         {
-            Shot?.Invoke();
+            ShotPressed?.Invoke();
         }
 
+        
+        private void StopShooting(InputAction.CallbackContext obj)
+        {
+            ShotReleased?.Invoke();
+        }
         
         
         public Vector2 GetNormalizedMoveInput()

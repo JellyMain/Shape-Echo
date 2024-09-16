@@ -18,7 +18,7 @@ namespace Factories
         }
 
 
-        public void CreatePlayer(Vector2 position)
+        public PlayerBase CreatePlayer(Vector2 position)
         {
             GameObject prefab = Resources.Load<GameObject>(RuntimeConstants.PrefabPaths.PLAYER);
             PlayerBase player = Object.Instantiate(prefab, position, Quaternion.identity).GetComponent<PlayerBase>();
@@ -34,7 +34,7 @@ namespace Factories
             player.playerShooting.WeaponBasePrefab = playerStaticData.defaultWeaponBase;
             player.playerShooting.WeaponRotationSpeed = playerStaticData.rotationSpeed;
             
-            player.playerShooting.CreateWeapon();
+            return player;
         }
     }
 }

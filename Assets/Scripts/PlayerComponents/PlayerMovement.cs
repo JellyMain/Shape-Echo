@@ -31,13 +31,13 @@ namespace PlayerComponents
 
         private void OnEnable()
         {
-            inputService.CurrentInput.Dashed += OnDash;
+            inputService.CurrentInput.DashPressed += OnDash;
         }
 
 
         private void OnDisable()
         {
-            inputService.CurrentInput.Dashed -= OnDash;
+            inputService.CurrentInput.DashPressed -= OnDash;
         }
 
 

@@ -110,6 +110,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""a348cab9-caff-4f6c-9699-d78adf581237"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -200,6 +209,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""MousePos"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0562f3f7-7ddb-48de-b804-8174e0dc37f9"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -216,6 +236,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_PcInput_Dash = m_PcInput.FindAction("Dash", throwIfNotFound: true);
         m_PcInput_Shoot = m_PcInput.FindAction("Shoot", throwIfNotFound: true);
         m_PcInput_MousePos = m_PcInput.FindAction("MousePos", throwIfNotFound: true);
+        m_PcInput_Reload = m_PcInput.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -335,6 +356,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PcInput_Dash;
     private readonly InputAction m_PcInput_Shoot;
     private readonly InputAction m_PcInput_MousePos;
+    private readonly InputAction m_PcInput_Reload;
     public struct PcInputActions
     {
         private @InputActions m_Wrapper;
@@ -343,6 +365,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_PcInput_Dash;
         public InputAction @Shoot => m_Wrapper.m_PcInput_Shoot;
         public InputAction @MousePos => m_Wrapper.m_PcInput_MousePos;
+        public InputAction @Reload => m_Wrapper.m_PcInput_Reload;
         public InputActionMap Get() { return m_Wrapper.m_PcInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -364,6 +387,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @MousePos.started += instance.OnMousePos;
             @MousePos.performed += instance.OnMousePos;
             @MousePos.canceled += instance.OnMousePos;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
         }
 
         private void UnregisterCallbacks(IPcInputActions instance)
@@ -380,6 +406,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @MousePos.started -= instance.OnMousePos;
             @MousePos.performed -= instance.OnMousePos;
             @MousePos.canceled -= instance.OnMousePos;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
         }
 
         public void RemoveCallbacks(IPcInputActions instance)
@@ -408,5 +437,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnMousePos(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }
