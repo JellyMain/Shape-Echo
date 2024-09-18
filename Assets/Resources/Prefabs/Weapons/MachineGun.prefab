@@ -137,6 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03ca11fff94020a2888bb0816828cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab: {fileID: 1811789572953837462}
   barrelPosition: {fileID: 7341544856375603409}
   bulletPrefab: {fileID: 4876576823751633482, guid: f16025bd5df34054886a856753ecb2f8, type: 3}
   maxAmmo: 60

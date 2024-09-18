@@ -12,13 +12,14 @@ namespace PlayerComponents
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField, Required] private Rigidbody2D rb2d;
+        private InputService inputService;
         public float RotationSpeed { get; set; }
         public float DashSpeed { get; set; }
         public float DashDuration { get; set; }
         public float MoveSpeed { get; set; }
-        private InputService inputService;
+        public bool IsMoving { get; private set; }
         private bool isDashing;
-        public bool isMoving;
+
         public event Action DashStarted;
         public event Action DashEnded;
 
@@ -60,7 +61,7 @@ namespace PlayerComponents
 
             Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
 
-            isMoving = moveDirection != Vector2.zero;
+            IsMoving = moveDirection != Vector2.zero;
 
             rb2d.velocity = moveDirection * MoveSpeed;
         }

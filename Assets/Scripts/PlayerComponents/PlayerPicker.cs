@@ -8,17 +8,21 @@ namespace PlayerComponents
 {
     public class PlayerPicker : MonoBehaviour
     {
-        [SerializeField, Required] private PlayerShooting playerShooting; 
-        
-        
+        private PlayerBase playerBase;
+
+
+        private void Awake()
+        {
+            playerBase = GetComponent<PlayerBase>();
+        }
+
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out WeaponBase weapon))
             {
-                playerShooting.SetNewWeapon(weapon);            
+                playerBase.playerShooting.SetNewWeapon(weapon);
             }
         }
-
-        
     }
 }

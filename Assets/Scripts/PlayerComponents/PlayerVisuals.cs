@@ -10,14 +10,13 @@ namespace PlayerComponents
 {
     public class PlayerVisuals : MonoBehaviour
     {
-        [SerializeField, Required] private TrailRenderer trailRenderer;
         [SerializeField, Required] private PlayerBase playerBase;
+        [SerializeField, Required] private TrailRenderer trailRenderer;
         [SerializeField, Required] private ParticleSystem particles;
         [SerializeField, Required] private Image reloadProgressBar;
         [SerializeField] private float squeezeAmount = 0.6f;
         [SerializeField] private float squeezeDuration = 0.1f;
         [SerializeField] private float unsqueezeDuration = 0.3f;
-        private float reloadTime;
 
 
         private void OnEnable()
@@ -25,7 +24,6 @@ namespace PlayerComponents
             playerBase.playerMovement.DashStarted += EnableTrail;
             playerBase.playerMovement.DashEnded += DisableTrail;
             playerBase.playerShooting.ReloadStarted += OnReloadStarted;
-            playerBase.playerShooting.Reloaded += StopReloading;
         }
 
 
@@ -39,7 +37,7 @@ namespace PlayerComponents
 
         private void Update()
         {
-            if (playerBase.playerMovement.isMoving)
+            if (playerBase.playerMovement.IsMoving)
             {
                 EnableMovingEffect();
             }
@@ -88,29 +86,19 @@ namespace PlayerComponents
         }
 
 
-
         private async UniTaskVoid StartReloading(float reloadDuration)
         {
-            reloadTime = 0;
-
-            while (reloadTime < reloadDuration)
+            while (playerBase.playerShooting.IsReloading)
             {
-                reloadTime += Time.deltaTime;
-                float reloadProgress = reloadTime / reloadDuration;
+                float reloadProgress = playerBase.playerShooting.ReloadTimer / reloadDuration;
 
                 reloadProgressBar.fillAmount = reloadProgress;
-
+                
                 await UniTask.Yield();
             }
 
             reloadProgressBar.fillAmount = 0;
         }
-
-
-
-        private void StopReloading(int _)
-        {
-            reloadTime = 0;
-        }
+        
     }
 }

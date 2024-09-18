@@ -7,6 +7,8 @@ namespace StaticData.Data
     [CreateAssetMenu(menuName = "StaticData/PlayerStaticData", fileName = "PlayerStaticData")]
     public class PlayerStaticData : ScriptableObject
     {
+        public float maxHealth = 100;
+        
         public WeaponBase defaultWeaponBase;
         public float weaponRotationSpeed = 10;
         

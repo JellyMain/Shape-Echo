@@ -8,6 +8,7 @@ namespace Weapons
 {
     public abstract class WeaponBase : MonoBehaviour
     {
+        [SerializeField] private WeaponBase prefab;
         [SerializeField] protected Transform barrelPosition;
         [SerializeField] protected Bullet bulletPrefab;
         [SerializeField] protected int maxAmmo;
@@ -19,6 +20,7 @@ namespace Weapons
         public int MaxAmmo => maxAmmo;
         public float ShotCooldown => shotCooldown;
         public float ReloadDuration => reloadDuration;
+        public WeaponBase Prefab => prefab;
 
 
         private void Start()

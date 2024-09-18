@@ -24,15 +24,18 @@ namespace Factories
             PlayerBase player = Object.Instantiate(prefab, position, Quaternion.identity).GetComponent<PlayerBase>();
 
             PlayerStaticData playerStaticData = staticDataService.PlayerStaticData;
-            
 
+            player.playerHealth.Max = playerStaticData.maxHealth;
+            player.playerHealth.Current = playerStaticData.maxHealth;
+            
             player.playerMovement.DashDuration = playerStaticData.dashDuration;
             player.playerMovement.MoveSpeed = playerStaticData.moveSpeed;
             player.playerMovement.DashSpeed = playerStaticData.dashSpeed;
             player.playerMovement.RotationSpeed = playerStaticData.rotationSpeed;
 
-            player.playerShooting.WeaponBasePrefab = playerStaticData.defaultWeaponBase;
             player.playerShooting.WeaponRotationSpeed = playerStaticData.rotationSpeed;
+            player.playerShooting.CurrentWeapon = playerStaticData.defaultWeaponBase;
+
             
             return player;
         }
