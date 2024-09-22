@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4280049173326864390}
   - component: {fileID: 5348863397077676301}
   - component: {fileID: 1965758875213336118}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: ProgressBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4288334038067771165}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: WeaponHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 185777903553487995}
   - component: {fileID: 9033020133969925495}
   - component: {fileID: 2598430418850522762}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Player
   m_TagString: Shape
   m_Icon: {fileID: 0}
@@ -188,7 +188,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponHand: {fileID: 4288334038067771165}
-  col: {fileID: 0}
 --- !u!114 &7145051086657863968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,7 +200,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90d0fff460a743fc805ed813023467c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerShooting: {fileID: 1514568253118067421}
 --- !u!114 &185777903553487995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +296,7 @@ GameObject:
   - component: {fileID: 2844583300929895435}
   - component: {fileID: 2339939311957044624}
   - component: {fileID: 8453539317422650621}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Reload
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +400,7 @@ GameObject:
   - component: {fileID: 3475620813326803224}
   - component: {fileID: 5282508323240942763}
   - component: {fileID: 7319689209771786810}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}

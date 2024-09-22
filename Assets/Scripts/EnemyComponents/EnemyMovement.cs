@@ -1,7 +1,32 @@
+using EnemyComponents.MovementBehaviour;
 using UnityEngine;
 
 
-public class EnemyMovement : MonoBehaviour
+namespace EnemyComponents
 {
-    public float MoveSpeed { get; set; }
+    public class EnemyMovement : MonoBehaviour
+    {
+        [SerializeField] private MovementBehaviourBase movementBehaviour;
+        private Rigidbody2D rb2d;
+        public Transform Player { get; set; }
+        public float MoveSpeed { get; set; }
+
+
+        private void Awake()
+        {
+            rb2d = GetComponent<Rigidbody2D>();
+        }
+
+
+        private void Start()
+        {
+            movementBehaviour.Init(rb2d, Player, transform, MoveSpeed);
+        }
+
+
+        private void FixedUpdate()
+        {
+            movementBehaviour.Move();
+        }
+    }
 }

@@ -21,7 +21,7 @@ namespace Infrastructure.Installers.Global
             InitServices();
         }
 
-        
+
         private void Start()
         {
             gameStateMachine.Enter<BootstrapState>();
@@ -37,10 +37,17 @@ namespace Infrastructure.Installers.Global
             LoadingScreen loadingScreen = CreateLoadingScreen();
             SceneLoader sceneLoader = RegisterSceneLoader(loadingScreen);
             UIFactory uiFactory = RegisterUIFactory();
+            EnemiesFactory enemiesFactory = RegisterEnemiesFactory(staticDataService);
 
             gameStateMachine = RegisterGameStateMachine();
 
-            RegisterGameMachineStates(gameStateMachine, sceneLoader, uiFactory, levelFactory);
+            RegisterGameMachineStates(gameStateMachine, sceneLoader, uiFactory, levelFactory, enemiesFactory);
+        }
+
+
+        private EnemiesFactory RegisterEnemiesFactory(StaticDataService staticDataService)
+        {
+            return ServiceLocator.Container.RegisterGlobalSingle(new EnemiesFactory(staticDataService));
         }
 
 
@@ -49,7 +56,7 @@ namespace Infrastructure.Installers.Global
             return ServiceLocator.Container.RegisterGlobalSingle(new LevelFactory(staticDataService));
         }
 
-        
+
         private static void InitServices()
         {
             ServiceLocator.Container.Single<GameStateMachine>().Init();
@@ -58,12 +65,13 @@ namespace Infrastructure.Installers.Global
 
 
         private static void RegisterGameMachineStates(GameStateMachine gameStateMachine, SceneLoader sceneLoader,
-            UIFactory uiFactory, LevelFactory levelFactory)
+            UIFactory uiFactory, LevelFactory levelFactory, EnemiesFactory enemiesFactory)
         {
             ServiceLocator.Container.RegisterGlobalSingle(new BootstrapState(gameStateMachine));
             ServiceLocator.Container.RegisterGlobalSingle(new LoadProgressState(gameStateMachine));
             ServiceLocator.Container.RegisterGlobalSingle(new LoadMetaState(gameStateMachine, sceneLoader));
-            ServiceLocator.Container.RegisterGlobalSingle(new LoadLevelState(gameStateMachine, sceneLoader, uiFactory, levelFactory));
+            ServiceLocator.Container.RegisterGlobalSingle(new LoadLevelState(gameStateMachine, sceneLoader, uiFactory,
+                levelFactory, enemiesFactory));
             ServiceLocator.Container.RegisterGlobalSingle(new GameLoopState(gameStateMachine));
         }
 

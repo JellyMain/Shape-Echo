@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2170139686dc41ec9ecf7bfb642e4b2a, type: 3}
   m_Name: TriangleEnemy
   m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 1202438151307875665, guid: 2b3df868bf142cd45a807c10bca8ab99, type: 3}
+  enemyType: 0
   maxHealth: 100
-  moveSpeed: 10
-  shotCooldown: 0.5
+  moveSpeed: 3
+  bulletPrefab: {fileID: 4876576823751633482, guid: f16025bd5df34054886a856753ecb2f8, type: 3}
+  shootingPattern: {fileID: 11400000, guid: 7e3509659bae32a4c8a4f92f95435530, type: 2}
+  playerShootRadius: 5
+  shotCooldown: 1

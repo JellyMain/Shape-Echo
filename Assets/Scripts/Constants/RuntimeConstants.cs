@@ -15,10 +15,11 @@ namespace Constants
             public const string MAIN_MENU_SCENE = "MenuScene";
         }
 
-    
+
         public static class StaticDataPaths
         {
             public const string PLAYER_STATIC_DATA = "StaticData/PlayerStaticData";
+            public const string ENEMIES_STATIC_DATA = "StaticData/Enemies/TriangleEnemy";
         }
     }
 }
