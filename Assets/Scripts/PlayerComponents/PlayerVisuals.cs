@@ -4,6 +4,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 
 namespace PlayerComponents
@@ -14,10 +15,7 @@ namespace PlayerComponents
         [SerializeField, Required] private TrailRenderer trailRenderer;
         [SerializeField, Required] private ParticleSystem particles;
         [SerializeField, Required] private Image reloadProgressBar;
-        [SerializeField] private float squeezeAmount = 0.6f;
-        [SerializeField] private float squeezeDuration = 0.1f;
-        [SerializeField] private float unsqueezeDuration = 0.3f;
-
+        
 
         private void OnEnable()
         {
@@ -27,11 +25,11 @@ namespace PlayerComponents
         }
 
 
-
         private void OnDisable()
         {
             playerBase.playerMovement.DashStarted -= EnableTrail;
             playerBase.playerMovement.DashEnded -= DisableTrail;
+            playerBase.playerShooting.ReloadStarted -= OnReloadStarted;
         }
 
 
@@ -62,21 +60,24 @@ namespace PlayerComponents
 
         private void EnableMovingEffect()
         {
-            if (Mathf.Approximately(transform.localScale.y, squeezeAmount)) return;
+            Vector2 moveDirection = playerBase.playerMovement.MoveDirection;
 
-            transform.DOScaleY(squeezeAmount, squeezeDuration).SetEase(Ease.OutQuad);
-            transform.DOScaleX(1.2f, squeezeDuration).SetEase(Ease.OutQuad);
-            particles.Play();
+            Quaternion targetRotation = DataUtility.DirectionToQuaternion(moveDirection);
+            particles.transform.rotation = targetRotation;
+
+            if (!particles.isPlaying)
+            {
+                particles.Play();
+            }
         }
 
 
         private void DisableMovingEffect()
         {
-            if (Mathf.Approximately(transform.localScale.y, 1)) return;
-
-            transform.DOScaleY(1, unsqueezeDuration).SetEase(Ease.OutQuad);
-            transform.DOScaleX(1, unsqueezeDuration).SetEase(Ease.OutQuad);
-            particles.Stop();
+            if (particles.isPlaying)
+            {
+                particles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            }
         }
 
 
@@ -93,12 +94,11 @@ namespace PlayerComponents
                 float reloadProgress = playerBase.playerShooting.ReloadTimer / reloadDuration;
 
                 reloadProgressBar.fillAmount = reloadProgress;
-                
+
                 await UniTask.Yield();
             }
 
             reloadProgressBar.fillAmount = 0;
         }
-        
     }
 }

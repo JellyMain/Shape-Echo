@@ -1,3 +1,4 @@
+using EnemyComponents.MovementBehaviour;
 using PlayerComponents;
 using UnityEngine;
 
@@ -13,4 +14,22 @@ namespace EnemyComponents.MovementBehaviour
             rb2d.velocity = moveDirection * moveSpeed;
         }
     }
+}
+
+
+public class Roam : MovementBehaviourBase
+{
+    private float nextPointTimer;
+    private bool isMoving;
+
+
+    public override void Move()
+    {
+        Vector2 randomPoint = Random.insideUnitCircle;
+
+        Vector2 moveDirection = (randomPoint - (Vector2)enemy.position).normalized;
+        rb2d.velocity = moveDirection * moveSpeed;
+    }
+
+
 }

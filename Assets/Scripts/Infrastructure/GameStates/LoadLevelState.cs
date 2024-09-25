@@ -39,7 +39,7 @@ namespace Infrastructure.GameStates
         private void CreateLevel()
         {
             PlayerBase player = levelFactory.CreatePlayer(Vector2.zero);
-            enemiesFactory.CreateEnemy(EnemyType.Triangle, Vector2.one, player);
+            // enemiesFactory.CreateEnemy(EnemyType.Triangle, Vector2.one, player);
             uiFactory.CreateHud(player);
         }
     }

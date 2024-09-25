@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: movementBehaviour
       value: 
       objectReference: {fileID: 11400000, guid: 6e56e06cf9f7077448c1e6772e936aa0, type: 2}
+    - target: {fileID: 4002435597706492680, guid: f35f8f47fa05ba94286d87d89689b014, type: 3}
+      propertyPath: playerLayerMask.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4059234128735059466, guid: f35f8f47fa05ba94286d87d89689b014, type: 3}
       propertyPath: m_Size.x
       value: 2
@@ -28,6 +32,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4059234128735059466, guid: f35f8f47fa05ba94286d87d89689b014, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5236c48b8a7af4745833dea06ce197b5, type: 2}
     - target: {fileID: 7186857733965775288, guid: f35f8f47fa05ba94286d87d89689b014, type: 3}
       propertyPath: m_Name
       value: TriangleEnemy

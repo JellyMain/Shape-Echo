@@ -18,6 +18,7 @@ namespace PlayerComponents
         public float DashDuration { get; set; }
         public float MoveSpeed { get; set; }
         public bool IsMoving { get; private set; }
+        public Vector2 MoveDirection { get; private set; }
         private bool isDashing;
 
         public event Action DashStarted;
@@ -50,20 +51,18 @@ namespace PlayerComponents
 
         private void Update()
         {
-            RotateToMoveDirection();
+            // RotateToMoveDirection();
         }
 
 
         private void Move()
         {
             if (isDashing) return;
+            
+            MoveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
+            IsMoving = MoveDirection != Vector2.zero;
 
-
-            Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
-
-            IsMoving = moveDirection != Vector2.zero;
-
-            rb2d.velocity = moveDirection * MoveSpeed;
+            rb2d.velocity = MoveDirection * MoveSpeed;
         }
 
 
@@ -96,10 +95,7 @@ namespace PlayerComponents
         {
             Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
 
-            float targetAngle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-
-            Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
-
+            Quaternion targetRotation = DataUtility.DirectionToQuaternion(moveDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * RotationSpeed);
         }
     }

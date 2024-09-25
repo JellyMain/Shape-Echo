@@ -54,10 +54,7 @@ namespace EnemyComponents
                 player = null;
             }
         }
-
-
-
-
+        
 
         private void StartShooting()
         {
