@@ -12,8 +12,8 @@ namespace StaticData.Data
         public WeaponBase defaultWeaponBase;
         public float weaponRotationSpeed = 10;
         
-        public float rotationSpeed = 10;
         public float dashSpeed = 30;
+        public float dashCooldown = 2;
         public float dashDuration = 1;
         public float moveSpeed = 20;
     }

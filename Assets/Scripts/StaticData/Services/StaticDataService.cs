@@ -3,7 +3,9 @@ using System.Linq;
 using Constants;
 using EnemyComponents;
 using StaticData.Data;
+using UI;
 using UnityEngine;
+using Weapons.Bullets;
 
 
 namespace StaticData.Services
@@ -12,8 +14,10 @@ namespace StaticData.Services
     {
         public PlayerStaticData PlayerStaticData { get; private set; }
 
-        public Dictionary<EnemyType, EnemyStaticData> enemiesStaticData =
+        private Dictionary<EnemyType, EnemyStaticData> enemiesStaticData =
             new Dictionary<EnemyType, EnemyStaticData>();
+
+        private Dictionary<AmmoType, BulletUI> bulletsUIConfig;
 
 
         public void Init()
@@ -24,14 +28,42 @@ namespace StaticData.Services
 
         private void LoadStaticData()
         {
+            LoadBulletSlotsConfig();
             LoadPlayerStaticData();
             LoadEnemiesStaticData();
         }
 
 
+
+
         public EnemyStaticData EnemyStaticDataForEnemyType(EnemyType enemyType)
         {
-            return enemiesStaticData.GetValueOrDefault(enemyType);
+            if (enemiesStaticData.TryGetValue(enemyType, out EnemyStaticData enemyStaticData))
+            {
+                return enemyStaticData;
+            }
+
+            Debug.LogError($"Couldn't found enemy static data with key: {enemyType}");
+            return null;
+        }
+
+
+        public BulletUI BulletUIPrefabForAmmoType(AmmoType ammoType)
+        {
+            if (bulletsUIConfig.TryGetValue(ammoType, out BulletUI bulletUIPrefab))
+            {
+                return bulletUIPrefab;
+            }
+
+            Debug.LogError($"Couldn't found prefab with key: {ammoType}");
+            return null;
+        }
+
+
+        private void LoadBulletSlotsConfig()
+        {
+            bulletsUIConfig = Resources.Load<BulletsUIConfig>(RuntimeConstants.StaticDataPaths.BULLET_SLOTS_CONFIG)
+                .bulletsUIConfig;
         }
 
 
@@ -47,8 +79,5 @@ namespace StaticData.Services
         {
             PlayerStaticData = Resources.Load<PlayerStaticData>(RuntimeConstants.StaticDataPaths.PLAYER_STATIC_DATA);
         }
-        
-        
-       
     }
 }

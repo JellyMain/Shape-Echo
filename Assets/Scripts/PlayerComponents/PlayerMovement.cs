@@ -11,15 +11,17 @@ namespace PlayerComponents
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField, Required] private Rigidbody2D rb2d;
+        private Rigidbody2D rb2d;
         private InputService inputService;
-        public float RotationSpeed { get; set; }
+        public float DashCooldown { get; set; }
         public float DashSpeed { get; set; }
         public float DashDuration { get; set; }
         public float MoveSpeed { get; set; }
         public bool IsMoving { get; private set; }
         public Vector2 MoveDirection { get; private set; }
         private bool isDashing;
+        private bool canDash = true;
+        private float dashCooldownTimer;
 
         public event Action DashStarted;
         public event Action DashEnded;
@@ -28,6 +30,7 @@ namespace PlayerComponents
         private void Awake()
         {
             inputService = ServiceLocator.Container.Single<InputService>();
+            rb2d = GetComponent<Rigidbody2D>();
         }
 
 
@@ -49,16 +52,10 @@ namespace PlayerComponents
         }
 
 
-        private void Update()
-        {
-            // RotateToMoveDirection();
-        }
-
-
         private void Move()
         {
             if (isDashing) return;
-            
+
             MoveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
             IsMoving = MoveDirection != Vector2.zero;
 
@@ -74,29 +71,30 @@ namespace PlayerComponents
 
         private async UniTaskVoid Dash()
         {
-            if (!isDashing)
+            if (canDash)
             {
+                dashCooldownTimer = 0;
+                canDash = false;
+                
                 DashStarted?.Invoke();
                 isDashing = true;
                 Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
                 rb2d.velocity = moveDirection * DashSpeed;
-                transform.right = moveDirection;
 
                 int delay = DashDuration.SecondsToMilliseconds();
                 await UniTask.Delay(delay);
 
                 isDashing = false;
                 DashEnded?.Invoke();
+
+                while (dashCooldownTimer < DashCooldown)
+                {
+                    dashCooldownTimer += Time.deltaTime;
+                    await UniTask.Yield();
+                }
+
+                canDash = true;
             }
-        }
-
-
-        private void RotateToMoveDirection()
-        {
-            Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
-
-            Quaternion targetRotation = DataUtility.DirectionToQuaternion(moveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * RotationSpeed);
         }
     }
 }

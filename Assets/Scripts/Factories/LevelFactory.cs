@@ -31,9 +31,9 @@ namespace Factories
             player.playerMovement.DashDuration = playerStaticData.dashDuration;
             player.playerMovement.MoveSpeed = playerStaticData.moveSpeed;
             player.playerMovement.DashSpeed = playerStaticData.dashSpeed;
-            player.playerMovement.RotationSpeed = playerStaticData.rotationSpeed;
+            player.playerMovement.DashCooldown = playerStaticData.dashCooldown;
 
-            player.playerShooting.WeaponRotationSpeed = playerStaticData.rotationSpeed;
+            player.playerShooting.WeaponRotationSpeed = playerStaticData.weaponRotationSpeed;
             player.playerShooting.CurrentWeapon = playerStaticData.defaultWeaponBase;
 
             

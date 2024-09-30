@@ -6,6 +6,7 @@ namespace PlayerComponents
     public class PlayerAnimator : MonoBehaviour
     {
         [SerializeField] private PlayerBase playerBase;
+        [SerializeField] private float transitionDuration = 0.2f;
         private static readonly int Idle = Animator.StringToHash("Idle");
         private static readonly int MoveUp = Animator.StringToHash("MoveUp");
         private static readonly int MoveUpRight = Animator.StringToHash("MoveUpRight");
@@ -27,26 +28,26 @@ namespace PlayerComponents
 
         private void Update()
         {
-            PlayMoveAnimations();
+            if (playerBase.playerMovement.IsMoving)
+            {
+                PlayMoveAnimations();
+            }
+            else
+            {
+                PlayIdleAnimation();
+            }
         }
 
 
         private void PlayMoveAnimations()
         {
             Vector2 moveDirection = playerBase.playerMovement.MoveDirection;
-            
-            if (moveDirection == Vector2.zero)
-            {
-                ChangeAnimation(Idle);
-                return;
-            }
 
             float threshold = 0.1f;
-            
+
             if (moveDirection == Vector2.right)
             {
                 ChangeAnimation(MoveRight);
-                Debug.Log("playing");
             }
             else if (moveDirection == Vector2.left)
             {
@@ -60,6 +61,7 @@ namespace PlayerComponents
             {
                 ChangeAnimation(MoveDown);
             }
+
             if (moveDirection.x > threshold && moveDirection.y > threshold)
             {
                 ChangeAnimation(MoveUpRight);
@@ -76,7 +78,12 @@ namespace PlayerComponents
             {
                 ChangeAnimation(MoveDownLeft);
             }
-           
+        }
+
+
+        private void PlayIdleAnimation()
+        {
+            ChangeAnimation(Idle);
         }
 
 
@@ -85,7 +92,7 @@ namespace PlayerComponents
             if (currentAnimation != animationHash)
             {
                 currentAnimation = animationHash;
-                animator.Play(currentAnimation);
+                animator.CrossFade(currentAnimation, transitionDuration);
             }
         }
     }

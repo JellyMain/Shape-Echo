@@ -18,8 +18,9 @@ namespace Constants
 
         public static class StaticDataPaths
         {
-            public const string PLAYER_STATIC_DATA = "StaticData/PlayerStaticData";
+            public const string PLAYER_STATIC_DATA = "StaticData/Player/PlayerStaticData";
             public const string ENEMIES_STATIC_DATA = "StaticData/Enemies/TriangleEnemy";
+            public const string BULLET_SLOTS_CONFIG = "StaticData/UI/BulletsUIConfig";
         }
     }
 }

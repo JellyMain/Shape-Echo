@@ -4,6 +4,7 @@ using Infrastructure;
 using Input.Services;
 using UnityEngine;
 using Weapons;
+using Weapons.Bullets;
 
 
 namespace PlayerComponents
@@ -24,7 +25,7 @@ namespace PlayerComponents
         public event Action<float> ReloadStarted;
         public event Action<int> Reloaded;
         public event Action<int> Shot;
-        public event Action<int> WeaponSet;
+        public event Action<int, AmmoType> WeaponSet;
 
 
         private void Awake()
@@ -66,7 +67,7 @@ namespace PlayerComponents
             CurrentWeapon = Instantiate(CurrentWeapon.Prefab, weaponHand.transform.position, Quaternion.identity,
                 weaponHand);
 
-            WeaponSet?.Invoke(CurrentWeapon.MaxAmmo);
+            WeaponSet?.Invoke(CurrentWeapon.MaxAmmo, CurrentWeapon.AmmoType);
         }
 
 
@@ -79,7 +80,7 @@ namespace PlayerComponents
 
             CurrentWeapon = weapon;
 
-            WeaponSet?.Invoke(CurrentWeapon.MaxAmmo);
+            WeaponSet?.Invoke(CurrentWeapon.MaxAmmo, CurrentWeapon.AmmoType);
         }
 
 

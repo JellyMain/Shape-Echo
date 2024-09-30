@@ -11,23 +11,25 @@ namespace Weapons
         [SerializeField] private WeaponBase prefab;
         [SerializeField] protected Transform barrelPosition;
         [SerializeField] protected Bullet bulletPrefab;
+        [SerializeField] private AmmoType ammoType;
         [SerializeField] protected int maxAmmo;
         [SerializeField] protected float reloadDuration;
         [SerializeField] protected float bulletSpeed;
         [SerializeField] protected float shotCooldown;
         [SerializeField] protected float spreadAngle;
-        public int CurrentAmmo { get; protected set; }
         public int MaxAmmo => maxAmmo;
         public float ShotCooldown => shotCooldown;
         public float ReloadDuration => reloadDuration;
         public WeaponBase Prefab => prefab;
+        public AmmoType AmmoType => ammoType;
+        public int CurrentAmmo { get; protected set; }
 
 
         private void Start()
         {
             InitAmmo();
         }
-        
+
 
         private void InitAmmo()
         {
@@ -62,7 +64,5 @@ namespace Weapons
         {
             CurrentAmmo = maxAmmo;
         }
-        
-
     }
 }

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799fa90958ed445b8a62690b79f41b0f, type: 3}
   m_Name: PlayerStaticData
   m_EditorClassIdentifier: 
+  maxHealth: 100
   defaultWeaponBase: {fileID: 6047761845738362999, guid: 9af446cd44d40844a83ca34a98c1d82f, type: 3}
   weaponRotationSpeed: 10
-  rotationSpeed: 10
-  dashSpeed: 30
-  dashDuration: 1
+  dashSpeed: 100
+  dashCooldown: 1.5
+  dashDuration: 0.15
   moveSpeed: 20

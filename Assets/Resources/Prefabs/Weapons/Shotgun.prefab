@@ -137,8 +137,9 @@ MonoBehaviour:
   prefab: {fileID: 6047761845738362999}
   barrelPosition: {fileID: 4572656645980757240}
   bulletPrefab: {fileID: 4876576823751633482, guid: f16025bd5df34054886a856753ecb2f8, type: 3}
+  ammoType: 2
   maxAmmo: 16
-  reloadDuration: 3
+  reloadDuration: 0.5
   bulletSpeed: 20
   shotCooldown: 1
   spreadAngle: 0
