@@ -1,10 +1,12 @@
 using System;
 using Cysharp.Threading.Tasks;
 using Infrastructure;
+using Input.Interfaces;
 using Input.Services;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Utils;
+using Zenject;
 
 
 namespace PlayerComponents
@@ -12,7 +14,7 @@ namespace PlayerComponents
     public class PlayerMovement : MonoBehaviour
     {
         private Rigidbody2D rb2d;
-        private InputService inputService;
+        private IInput inputService;
         public float DashCooldown { get; set; }
         public float DashSpeed { get; set; }
         public float DashDuration { get; set; }
@@ -26,23 +28,29 @@ namespace PlayerComponents
         public event Action DashStarted;
         public event Action DashEnded;
 
-
+        
+        [Inject]
+        private void Construct(IInput inputService)
+        {
+            this.inputService = inputService;
+        }
+        
+        
         private void Awake()
         {
-            inputService = ServiceLocator.Container.Single<InputService>();
             rb2d = GetComponent<Rigidbody2D>();
         }
 
 
         private void OnEnable()
         {
-            inputService.CurrentInput.DashPressed += OnDash;
+            inputService.DashPressed += OnDash;
         }
 
 
         private void OnDisable()
         {
-            inputService.CurrentInput.DashPressed -= OnDash;
+            inputService.DashPressed -= OnDash;
         }
 
 
@@ -56,7 +64,7 @@ namespace PlayerComponents
         {
             if (isDashing) return;
 
-            MoveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
+            MoveDirection = inputService.GetNormalizedMoveInput();
             IsMoving = MoveDirection != Vector2.zero;
 
             rb2d.velocity = MoveDirection * MoveSpeed;
@@ -78,7 +86,7 @@ namespace PlayerComponents
                 
                 DashStarted?.Invoke();
                 isDashing = true;
-                Vector2 moveDirection = inputService.CurrentInput.GetNormalizedMoveInput();
+                Vector2 moveDirection = inputService.GetNormalizedMoveInput();
                 rb2d.velocity = moveDirection * DashSpeed;
 
                 int delay = DashDuration.SecondsToMilliseconds();

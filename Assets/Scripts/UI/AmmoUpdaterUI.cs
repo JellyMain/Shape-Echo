@@ -7,6 +7,7 @@ using StaticData.Services;
 using UnityEngine;
 using UnityEngine.UI;
 using Weapons.Bullets;
+using Zenject;
 
 
 namespace UI
@@ -19,8 +20,14 @@ namespace UI
         private PlayerShooting playerShooting;
         private StaticDataService staticDataService;
         
+        
+        [Inject]
+        private void Construct(StaticDataService staticDataService)
+        {
+            this.staticDataService = staticDataService;
+        }
 
-
+       
         public void Init(PlayerShooting playerShooting)
         {
             this.playerShooting = playerShooting;
@@ -29,22 +36,16 @@ namespace UI
             this.playerShooting.Shot += DisableBullet;
             this.playerShooting.WeaponSet += OnWeaponSet;
         }
-
-
-        private void Awake()
-        {
-            staticDataService = ServiceLocator.Container.Single<StaticDataService>();
-        }
-
-
+        
+        
         private void OnDisable()
         {
             playerShooting.Reloaded -= ReloadBullets;
             playerShooting.Shot -= DisableBullet;
             playerShooting.WeaponSet -= OnWeaponSet;
         }
-
-
+        
+        
         private async void ReloadBullets(int currentAmmo)
         {
             layoutGroup.enabled = false;

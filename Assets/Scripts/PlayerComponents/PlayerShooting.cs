@@ -1,10 +1,12 @@
 using System;
 using Cysharp.Threading.Tasks;
 using Infrastructure;
+using Input.Interfaces;
 using Input.Services;
 using UnityEngine;
 using Weapons;
 using Weapons.Bullets;
+using Zenject;
 
 
 namespace PlayerComponents
@@ -15,7 +17,7 @@ namespace PlayerComponents
         public float WeaponRotationSpeed { get; set; }
         public WeaponBase CurrentWeapon { get; set; }
         private Vector2 mousePosition;
-        private InputService inputService;
+        private IInput inputService;
 
         public bool IsReloading { get; private set; }
         public float ReloadTimer { get; private set; }
@@ -27,12 +29,13 @@ namespace PlayerComponents
         public event Action<int> Shot;
         public event Action<int, AmmoType> WeaponSet;
 
-
-        private void Awake()
+        
+        [Inject]
+        private void Construct(IInput inputService)
         {
-            inputService = ServiceLocator.Container.Single<InputService>();
+            this.inputService = inputService;
         }
-
+        
 
         private void Start()
         {
@@ -42,17 +45,17 @@ namespace PlayerComponents
 
         private void OnEnable()
         {
-            inputService.CurrentInput.ShotPressed += StartShooting;
-            inputService.CurrentInput.ShotReleased += StopShooting;
-            inputService.CurrentInput.ReloadPressed += StartReload;
+            inputService.ShotPressed += StartShooting;
+            inputService.ShotReleased += StopShooting;
+            inputService.ReloadPressed += StartReload;
         }
 
 
         private void OnDisable()
         {
-            inputService.CurrentInput.ShotPressed -= StartShooting;
-            inputService.CurrentInput.ShotReleased -= StopShooting;
-            inputService.CurrentInput.ReloadPressed -= StartReload;
+            inputService.ShotPressed -= StartShooting;
+            inputService.ShotReleased -= StopShooting;
+            inputService.ReloadPressed -= StartReload;
         }
 
 
@@ -163,7 +166,7 @@ namespace PlayerComponents
         {
             if (CurrentWeapon != null)
             {
-                mousePosition = inputService.CurrentInput.GetWorldMousePosition();
+                mousePosition = inputService.GetWorldMousePosition();
 
                 Vector2 targetPosition = mousePosition - (Vector2)CurrentWeapon.transform.position;
 

@@ -18,7 +18,7 @@ namespace Factories
         }
 
 
-        public EnemyBase CreateEnemy(EnemyType enemyType, Vector2 position, PlayerBase player)
+        public EnemyBase CreateEnemy(EnemyType enemyType, Vector2 position)
         {
             EnemyStaticData enemyStaticData = staticDataService.EnemyStaticDataForEnemyType(enemyType);
             EnemyBase prefab = enemyStaticData.enemyPrefab;
@@ -26,7 +26,6 @@ namespace Factories
             EnemyBase enemy = Object.Instantiate(prefab, position, Quaternion.identity);
 
             enemy.enemyMovement.MoveSpeed = enemyStaticData.moveSpeed;
-            enemy.enemyMovement.Player = player.transform;
             
             enemy.enemyShooting.ShotCooldown = enemyStaticData.shotCooldown;
             enemy.enemyShooting.BulletPrefab = enemyStaticData.bulletPrefab;

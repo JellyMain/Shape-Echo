@@ -1,8 +1,7 @@
-using System;
-using Infrastructure;
 using Infrastructure.GameStates;
 using Infrastructure.Services;
 using UnityEngine;
+using Zenject;
 
 
 namespace UI
@@ -12,9 +11,10 @@ namespace UI
         private GameStateMachine gameStateMachine;
 
 
-        private void Awake()
+        [Inject]
+        private void Construct(GameStateMachine gameStateMachine)
         {
-            gameStateMachine = ServiceLocator.Container.Single<GameStateMachine>();
+            this.gameStateMachine = gameStateMachine;
         }
         
         

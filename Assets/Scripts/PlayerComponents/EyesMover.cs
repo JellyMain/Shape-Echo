@@ -1,7 +1,8 @@
 using System;
 using Infrastructure;
-using Input.Services;
+using Input.Interfaces;
 using UnityEngine;
+using Zenject;
 
 
 namespace PlayerComponents
@@ -14,13 +15,18 @@ namespace PlayerComponents
 
         private Vector2 firstEyeStartPos;
         private Vector2 secondEyeStartPos;
-        private InputService inputService;
+        private IInput inputService;
 
 
-        private void Awake()
+        [Inject]
+        private void Construct(IInput inputService)
         {
-            inputService = ServiceLocator.Container.Single<InputService>();
+            this.inputService = inputService;
+        }
 
+
+        private void Start()
+        {
             firstEyeStartPos = firstEye.localPosition;
             secondEyeStartPos = secondEye.localPosition;
         }
@@ -35,7 +41,7 @@ namespace PlayerComponents
 
         private void MoveEyes(Transform eye, Vector2 eyeStartPos)
         {
-            Vector2 mousePosition = inputService.CurrentInput.GetWorldMousePosition();
+            Vector2 mousePosition = inputService.GetWorldMousePosition();
 
             Vector2 eyeWorldPos = (Vector2)transform.position + eyeStartPos;
             Vector2 direction = mousePosition - eyeWorldPos;

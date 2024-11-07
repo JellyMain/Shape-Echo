@@ -3,25 +3,32 @@ using System.Collections.Generic;
 using Factories;
 using Infrastructure.GameStates;
 using Infrastructure.GameStates.Interfaces;
+using Zenject;
 
 
 namespace Infrastructure.Services
 {
-    public class GameStateMachine 
+    public class GameStateMachine: IInitializable
     {
+        private readonly GameStatesFactory gameStatesFactory;
         private Dictionary<Type, IGameState> states;
+
         
-        
-        
-        public void Init()
+        public GameStateMachine(GameStatesFactory gameStatesFactory)
+        {
+            this.gameStatesFactory = gameStatesFactory;
+        }
+
+
+        public void Initialize()
         {
             states = new Dictionary<Type, IGameState>()
             {
-                [typeof(BootstrapState)] = ServiceLocator.Container.Single<BootstrapState>(),
-                [typeof(LoadProgressState)] = ServiceLocator.Container.Single<LoadProgressState>(),
-                [typeof(LoadMetaState)] = ServiceLocator.Container.Single<LoadMetaState>(),
-                [typeof(LoadLevelState)] = ServiceLocator.Container.Single<LoadLevelState>(),
-                [typeof(GameLoopState)] = ServiceLocator.Container.Single<GameLoopState>()
+                [typeof(BootstrapState)] = gameStatesFactory.CreateState<BootstrapState>() ,
+                [typeof(LoadProgressState)] = gameStatesFactory.CreateState<LoadProgressState>(),
+                [typeof(LoadMetaState)] = gameStatesFactory.CreateState<LoadMetaState>(),
+                [typeof(LoadLevelState)] = gameStatesFactory.CreateState<LoadLevelState>(),
+                [typeof(GameLoopState)] = gameStatesFactory.CreateState<GameLoopState>()
             };
         }
         
@@ -37,6 +44,8 @@ namespace Infrastructure.Services
         {
             return states[typeof(TState)] as TState;
         }
-        
+
+
+       
     }
 }

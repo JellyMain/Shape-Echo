@@ -2,7 +2,7 @@ using EnemyComponents.MovementBehaviour;
 using UnityEngine;
 
 
-namespace EnemyComponents
+namespace Enemies.EnemyComponents
 {
     public class EnemyMovement : MonoBehaviour
     {
@@ -22,11 +22,14 @@ namespace EnemyComponents
         {
             movementBehaviour.Init(rb2d, Player, transform, MoveSpeed);
         }
-
-
+        
+        
         private void FixedUpdate()
         {
-            movementBehaviour.Move();
+            if (Player != null)
+            {
+                movementBehaviour.Move();
+            }
         }
     }
 }
